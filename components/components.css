@@ -1,0 +1,613 @@
+/* Papper components: CTAs and core controls for edge-device interfaces.
+ *
+ * Requires dist/tokens.css. Every value comes from a --paper-* token, so the
+ * components follow data-theme (light | dark | eink), data-palette
+ * (peach | pink | grayblue | lavanda | graphite) and data-typeface
+ * (default | device) with no extra CSS.
+ *
+ * Edge-device rules baked in:
+ *  - 48px minimum touch target on every interactive control.
+ *  - Visible :focus-visible ring for D-pad, rotary and keyboard navigation.
+ *  - Hover styles only on devices that can hover.
+ *  - eink theme / slow-refresh screens: no shadows, no translucency, no motion,
+ *    state shown by borders and inversion instead of tint.
+ */
+
+/* ---------- Base ---------- */
+.paper-surface {
+  background: var(--paper-surfaces-main-background-plain);
+  color: var(--paper-fonts-main);
+  font-family: var(--paper-font-sans);
+}
+
+/* ---------- Buttons / CTAs ---------- */
+.paper-btn {
+  --_bg: var(--paper-components-button-primary-surface);
+  --_bg-pressed: var(--paper-components-button-primary-surface-pressed);
+  --_fg: var(--paper-components-button-primary-text);
+  --_border: var(--_bg);
+  --_h: var(--paper-components-button-height-md);
+  --_px: var(--paper-components-button-padding-x-md);
+
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--paper-components-button-gap);
+  min-height: max(var(--_h), var(--paper-components-button-min-touch-target));
+  min-width: var(--paper-components-button-min-touch-target);
+  padding: 0 var(--_px);
+  border: var(--paper-components-button-border-width) solid var(--_border);
+  border-radius: var(--paper-components-button-radius);
+  background: var(--_bg);
+  color: var(--_fg);
+  font: 600 15px/1.2 var(--paper-font-sans);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--paper-motion-duration-fast) ease-out,
+              border-color var(--paper-motion-duration-fast) ease-out;
+}
+.paper-btn svg { width: 20px; height: 20px; flex: none; }
+
+@media (hover: hover) {
+  .paper-btn:hover:not(:disabled, [aria-disabled="true"]) { background: var(--_bg-pressed); }
+}
+.paper-btn:active:not(:disabled, [aria-disabled="true"]),
+.paper-btn[aria-pressed="true"] { background: var(--_bg-pressed); }
+
+.paper-btn:focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Hierarchy: one primary per view; secondary for alternatives; tertiary for low-emphasis actions. */
+.paper-btn--secondary {
+  --_bg: var(--paper-components-button-secondary-surface);
+  --_bg-pressed: var(--paper-components-button-secondary-surface-pressed);
+  --_fg: var(--paper-components-button-secondary-text);
+  --_border: var(--paper-components-button-secondary-border);
+}
+.paper-btn--tertiary {
+  --_bg: transparent;
+  --_bg-pressed: var(--paper-components-button-tertiary-surface-pressed);
+  --_fg: var(--paper-components-button-tertiary-text);
+  --_border: transparent;
+}
+.paper-btn--destructive {
+  --_bg: var(--paper-components-button-destructive-surface);
+  --_bg-pressed: var(--paper-components-button-destructive-surface);
+  --_fg: var(--paper-components-button-destructive-text);
+  --_border: var(--paper-components-button-destructive-border);
+}
+.paper-btn:disabled,
+.paper-btn[aria-disabled="true"] {
+  --_bg: var(--paper-components-button-disabled-surface);
+  --_fg: var(--paper-components-button-disabled-text);
+  --_border: var(--paper-components-button-disabled-surface);
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.paper-btn--sm { --_h: var(--paper-components-button-height-sm); --_px: var(--paper-components-button-padding-x-sm); font-size: 13px; }
+.paper-btn--lg { --_h: var(--paper-components-button-height-lg); --_px: var(--paper-components-button-padding-x-lg); font-size: 17px; }
+.paper-btn--block { display: flex; width: 100%; }
+.paper-btn--pill { border-radius: var(--paper-components-button-radius-pill); }
+.paper-btn--icon { --_px: 0; width: max(var(--_h), var(--paper-components-button-min-touch-target)); border-radius: var(--paper-components-button-radius-pill); }
+
+/* Button group: equal-width actions, primary last (right / bottom). */
+.paper-btn-group { display: flex; flex-wrap: wrap; gap: var(--paper-components-button-gap); }
+.paper-btn-group > .paper-btn { flex: 1 1 0; }
+
+/* ---------- Text field ---------- */
+.paper-field { display: grid; gap: 6px; font-family: var(--paper-font-sans); }
+.paper-field__label { font-size: 13px; font-weight: 600; color: var(--paper-fonts-main); }
+.paper-field__hint { font-size: 12px; color: var(--paper-fonts-secondary); }
+.paper-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--paper-components-input-height);
+  padding: 0 14px;
+  border: var(--paper-components-input-border-width) solid var(--paper-components-input-border);
+  border-radius: var(--paper-components-input-radius);
+  background: var(--paper-components-input-surface);
+  color: var(--paper-components-input-text);
+  font: 400 16px/1.3 var(--paper-font-sans); /* 16px stops mobile browsers zooming on focus */
+}
+.paper-input::placeholder { color: var(--paper-components-input-placeholder); opacity: 1; }
+.paper-input:focus-visible {
+  outline: none;
+  border-color: var(--paper-components-input-border-focus);
+  box-shadow: 0 0 0 calc(var(--paper-components-input-border-width-focus) - var(--paper-components-input-border-width)) var(--paper-components-input-border-focus);
+}
+.paper-field--error .paper-input { border-color: var(--paper-components-input-error); border-width: var(--paper-components-input-border-width-focus); }
+.paper-field--error .paper-field__hint { color: var(--paper-fonts-main); font-weight: 600; }
+.paper-field--error .paper-field__hint::before { content: "! "; }
+
+/* ---------- Switch (input type=checkbox role=switch) ---------- */
+.paper-switch {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  flex: none;
+  width: var(--paper-components-switch-width);
+  height: var(--paper-components-switch-height);
+  margin: 8px 0; /* 32 + 16 = 48px target */
+  border: 2px solid var(--paper-components-switch-border);
+  border-radius: 999px;
+  background: var(--paper-components-switch-track-off);
+  cursor: pointer;
+  transition: background-color var(--paper-motion-duration-fast) ease-out;
+}
+.paper-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(var(--paper-components-switch-height) - 8px);
+  height: calc(var(--paper-components-switch-height) - 8px);
+  border-radius: 50%;
+  background: var(--paper-components-switch-thumb-off);
+  transition: transform var(--paper-motion-duration-fast) ease-out;
+}
+.paper-switch:checked { background: var(--paper-components-switch-track-on); }
+.paper-switch:checked::after {
+  background: var(--paper-components-switch-thumb-on);
+  transform: translateX(calc(var(--paper-components-switch-width) - var(--paper-components-switch-height)));
+}
+.paper-switch:focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 2px;
+}
+.paper-switch:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---------- Checkbox ---------- */
+.paper-checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  width: 24px;
+  height: 24px;
+  margin: 12px;
+  border: var(--paper-components-checkbox-checkbox-thickness) solid var(--paper-components-checkbox-checkbox);
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+}
+.paper-checkbox::after {
+  content: "";
+  width: 10px;
+  height: 5px;
+  margin-top: -3px;
+  border: solid var(--paper-components-checkbox-checkbox);
+  border-width: 0 0 var(--paper-components-checkbox-checkbox-checker-thickness) var(--paper-components-checkbox-checkbox-checker-thickness);
+  transform: rotate(-45deg) scale(0);
+}
+.paper-checkbox:checked::after { transform: rotate(-45deg) scale(1); }
+.paper-checkbox:focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------- Segmented control / chips ---------- */
+.paper-segmented {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 2px solid var(--paper-components-segmented-border);
+  border-radius: var(--paper-components-button-radius-pill);
+  background: var(--paper-components-segmented-surface);
+}
+.paper-segmented > button {
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 40px;
+  min-width: 48px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--paper-components-button-radius-pill);
+  background: transparent;
+  color: var(--paper-components-segmented-text);
+  font: 600 14px/1 var(--paper-font-sans);
+  cursor: pointer;
+}
+.paper-segmented > button[aria-pressed="true"],
+.paper-segmented > button[aria-selected="true"] {
+  background: var(--paper-components-segmented-selected-surface);
+  color: var(--paper-components-segmented-selected-text);
+}
+.paper-segmented > button:focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------- List ---------- */
+.paper-list { margin: 0; padding: 0; list-style: none; font-family: var(--paper-font-sans); }
+.paper-list__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--paper-components-list-row-height);
+  padding: 0 16px;
+  border-bottom: 1px solid var(--paper-components-list-divider);
+  color: var(--paper-fonts-main);
+  text-decoration: none;
+}
+.paper-list__row:last-child { border-bottom: 0; }
+a.paper-list__row:active, button.paper-list__row:active { background: var(--paper-components-list-row-pressed); }
+.paper-list__row:focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: -3px;
+}
+.paper-list__title { flex: 1; font-size: 15px; }
+.paper-list__meta { font-size: 13px; color: var(--paper-fonts-secondary); }
+button.paper-list__row { width: 100%; border-left: 0; border-right: 0; border-top: 0; background: transparent; font: inherit; text-align: left; cursor: pointer; }
+
+/* ---------- Badge & status ---------- */
+.paper-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--paper-components-badge-surface);
+  color: var(--paper-components-badge-text);
+  font: 600 12px/1 var(--paper-font-sans);
+}
+
+/* Status always pairs a glyph with the tint so meaning survives on grayscale panels. */
+.paper-status {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 2px solid transparent;
+  border-radius: var(--paper-components-card-task-card-radius);
+  font: 400 14px/1.4 var(--paper-font-sans);
+}
+.paper-status::before { font-weight: 700; flex: none; }
+.paper-status--positive { background: var(--paper-components-status-positive-surface); color: var(--paper-components-status-positive-text); }
+.paper-status--positive::before { content: "✓"; }
+.paper-status--warning { background: var(--paper-components-status-warning-surface); color: var(--paper-components-status-warning-text); }
+.paper-status--warning::before { content: "!"; }
+.paper-status--critical { background: var(--paper-components-status-critical-surface); color: var(--paper-components-status-critical-text); }
+.paper-status--critical::before { content: "✕"; }
+.paper-status--info { background: var(--paper-components-status-info-surface); color: var(--paper-components-status-info-text); }
+.paper-status--info::before { content: "i"; font-style: italic; font-family: var(--paper-font-serif); }
+
+/* ---------- Progress ---------- */
+.paper-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: var(--paper-components-progress-height);
+  border: 0;
+  border-radius: 999px;
+  background: var(--paper-components-progress-track);
+  overflow: hidden;
+}
+.paper-progress::-webkit-progress-bar { background: var(--paper-components-progress-track); }
+.paper-progress::-webkit-progress-value { background: var(--paper-components-progress-fill); }
+.paper-progress::-moz-progress-bar { background: var(--paper-components-progress-fill); }
+
+/* ---------- Card ---------- */
+.paper-card {
+  padding: 20px;
+  border-radius: var(--paper-components-card-main-card-radius);
+  background: var(--paper-surfaces-main-first-layer);
+  color: var(--paper-fonts-main);
+}
+.paper-card--task { border-radius: var(--paper-components-card-task-card-radius); background: var(--paper-surfaces-main-second-layer); padding: 14px; }
+
+/* ---------- Dialog (<dialog class="paper-dialog">) ---------- */
+.paper-dialog {
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - 32px));
+  padding: 24px;
+  border: 2px solid var(--paper-components-dialog-border);
+  border-radius: var(--paper-components-dialog-radius);
+  background: var(--paper-components-dialog-surface);
+  color: var(--paper-fonts-main);
+  box-shadow: var(--paper-shadow-slight-shadow);
+  font-family: var(--paper-font-sans);
+}
+.paper-dialog::backdrop { background: var(--paper-components-dialog-scrim); }
+.paper-dialog__title { margin: 0 0 8px; font: 700 20px/1.25 var(--paper-font-sans); }
+.paper-dialog__body { margin: 0 0 20px; color: var(--paper-fonts-secondary); }
+
+/* ==========================================================================
+ * Editorial / planner patterns
+ * Hairline-divided lists, mono uppercase labels, round checks, one signal
+ * accent. Pair with data-palette="paper" for the warm paper look.
+ * ========================================================================== */
+
+/* Overline: "WED 12 — WEEK 24", section labels, meta counts. */
+.paper-overline {
+  margin: 0;
+  font: 500 12px/1.2 var(--paper-font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-fonts-secondary);
+}
+
+/* Page header: overline + display title + optional meta, closed by a hairline. */
+.paper-page-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 8px 16px;
+  padding: 32px 24px 24px;
+  border-bottom: 1px solid var(--paper-borders-colors-hairline);
+}
+.paper-page-header > .paper-overline:first-child { grid-column: 1 / -1; }
+.paper-page-header__title {
+  margin: 0;
+  font: 590 44px/1.1 var(--paper-font-sans);
+  letter-spacing: -0.02em;
+  color: var(--paper-fonts-accent);
+}
+.paper-page-header__meta { padding-bottom: 6px; }
+
+/* Section: overline label over a hairline-divided group. */
+.paper-section { padding: 28px 24px 0; }
+.paper-section > .paper-overline { padding-bottom: 12px; border-bottom: 1px solid var(--paper-borders-colors-hairline); }
+
+/* Task row: round check, title, mono time, optional tag. */
+.paper-task {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--paper-components-task-check-size) 1fr auto;
+  align-items: start;
+  gap: 4px 16px;
+  min-height: 64px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--paper-borders-colors-hairline);
+  color: var(--paper-fonts-accent);
+}
+.paper-task__check {
+  -webkit-appearance: none;
+  appearance: none;
+  grid-row: span 2;
+  display: grid;
+  place-content: center;
+  width: var(--paper-components-task-check-size);
+  height: var(--paper-components-task-check-size);
+  margin: 0;
+  border: 1.5px solid var(--paper-components-task-check-border);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.paper-task__check::before { /* enlarge hit area to 48px without moving the layout */
+  content: "";
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  margin: -10px 0 0 -10px;
+}
+.paper-task__check:checked { border-color: var(--paper-signal-positive); background: var(--paper-signal-positive); }
+.paper-task__check:checked::after {
+  content: "";
+  width: 10px;
+  height: 5px;
+  margin-top: -3px;
+  border: solid var(--paper-signal-on-positive);
+  border-width: 0 0 2px 2px;
+  transform: rotate(-45deg);
+}
+.paper-task__check:focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 3px;
+}
+.paper-task__title { font: 500 18px/1.3 var(--paper-font-sans); }
+.paper-task__time {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 400 13px/1.2 var(--paper-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--paper-fonts-secondary);
+}
+.paper-task__aside { grid-row: 1 / span 2; grid-column: 3; align-self: center; }
+.paper-task--done .paper-task__title { color: var(--paper-fonts-muted); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.paper-task--current::before { /* accent bar in the gutter */
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -24px;
+  width: var(--paper-components-task-current-bar-width);
+  background: var(--paper-components-task-current-bar);
+}
+.paper-task--current .paper-task__time { color: var(--paper-signal-accent-text); }
+.paper-task--muted { color: var(--paper-fonts-muted); }
+
+/* Tag: tiny filled label ("NOW"). Dark text on the accent keeps it above 4.5:1. */
+.paper-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: var(--paper-signal-accent);
+  color: var(--paper-signal-on-accent);
+  font: 600 10px/1 var(--paper-font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Tab bar: mono uppercase labels, accent underline on the current tab. */
+.paper-tabbar {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  border-top: 1px solid var(--paper-borders-colors-hairline);
+  background: inherit;
+}
+.paper-tabbar > a,
+.paper-tabbar > button {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--paper-components-tabbar-height);
+  min-width: 48px;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  color: var(--paper-components-tabbar-text);
+  font: 500 12px/1 var(--paper-font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.paper-tabbar > [aria-current="page"],
+.paper-tabbar > [aria-selected="true"] { color: var(--paper-components-tabbar-text-active); font-weight: 600; }
+.paper-tabbar > [aria-current="page"]::after,
+.paper-tabbar > [aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  height: var(--paper-components-tabbar-indicator-height);
+  border-radius: 2px;
+  background: var(--paper-components-tabbar-indicator);
+}
+.paper-tabbar > :focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: -4px;
+}
+
+/* Date strip: day label, round date, dot count. */
+.paper-datestrip { display: flex; justify-content: space-between; gap: 4px; padding: 20px 24px; }
+.paper-date {
+  -webkit-appearance: none;
+  appearance: none;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  min-width: 48px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--paper-fonts-accent);
+  cursor: pointer;
+}
+.paper-date__day { font: 500 11px/1 var(--paper-font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper-fonts-secondary); }
+.paper-date__num {
+  display: grid;
+  place-content: center;
+  width: var(--paper-components-date-size);
+  height: var(--paper-components-date-size);
+  border: 1.5px solid var(--paper-components-date-ring);
+  border-radius: 50%;
+  font: 400 18px/1 var(--paper-font-mono);
+}
+.paper-date[aria-pressed="true"] .paper-date__day,
+.paper-date[aria-current="date"] .paper-date__day { color: var(--paper-fonts-accent); font-weight: 600; }
+.paper-date[aria-pressed="true"] .paper-date__num { border: 2px solid var(--paper-components-date-ring-selected); color: var(--paper-signal-accent-text); }
+.paper-date:disabled { color: var(--paper-fonts-muted); cursor: default; }
+.paper-date__dots { display: flex; gap: 3px; height: 5px; }
+.paper-date__dots > i { width: 5px; height: 5px; border-radius: 50%; background: var(--paper-signal-accent); }
+.paper-date:focus-visible { outline: none; }
+.paper-date:focus-visible .paper-date__num {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Project / metric row: title + mono counts + thin progress. */
+.paper-meter {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 16px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--paper-borders-colors-hairline);
+  color: var(--paper-fonts-accent);
+}
+.paper-meter__title { font: 500 22px/1.25 var(--paper-font-sans); }
+.paper-meter .paper-progress {
+  grid-column: 1 / -1;
+  height: var(--paper-components-progress-height-thin);
+  --paper-components-progress-fill: var(--paper-components-progress-fill-positive);
+}
+.paper-meter--muted { color: var(--paper-fonts-muted); }
+.paper-meter--muted .paper-overline { color: var(--paper-fonts-muted); }
+
+/* Floating action button. */
+.paper-fab {
+  -webkit-appearance: none;
+  appearance: none;
+  display: grid;
+  place-content: center;
+  width: var(--paper-components-fab-size);
+  height: var(--paper-components-fab-size);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paper-components-fab-surface);
+  color: var(--paper-components-fab-icon);
+  box-shadow: var(--paper-shadow-slight-shadow);
+  cursor: pointer;
+}
+.paper-fab svg { width: 30px; height: 30px; }
+.paper-fab:active { transform: scale(0.96); }
+.paper-fab:focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 3px;
+}
+
+/* ---------- E-paper adjustments ----------
+ * Applied for the explicit eink theme and, when no theme is set, on screens
+ * that report slow refresh or a monochrome frame buffer (same rule as tokens.css).
+ */
+[data-theme="eink"] .paper-btn,
+[data-theme="eink"] .paper-card,
+[data-theme="eink"] .paper-status,
+[data-theme="eink"] .paper-dialog,
+[data-theme="eink"] .paper-list { -webkit-font-smoothing: none; }
+
+[data-theme="eink"] .paper-card,
+[data-theme="eink"] .paper-status { border: 2px solid var(--paper-borders-colors-active); }
+[data-theme="eink"] .paper-card--task { border-width: 1px; }
+[data-theme="eink"] .paper-dialog { box-shadow: none; border-width: 3px; }
+[data-theme="eink"] .paper-fab { box-shadow: none; }
+[data-theme="eink"] .paper-fab:active { transform: none; background: var(--paper-color-ink-0); color: var(--paper-color-ink-15); outline: 3px solid var(--paper-color-ink-15); }
+[data-theme="eink"] .paper-task__check { border-width: 2px; }
+[data-theme="eink"] .paper-date__num { border-width: 2px; }
+[data-theme="eink"] .paper-date[aria-pressed="true"] .paper-date__num { background: var(--paper-color-ink-15); color: var(--paper-color-ink-0); }
+[data-theme="eink"] .paper-progress { outline: 2px solid var(--paper-borders-colors-active); outline-offset: 1px; }
+[data-theme="eink"] .paper-btn--tertiary { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; }
+[data-theme="eink"] .paper-btn--destructive { border-width: 3px; }
+[data-theme="eink"] .paper-btn:disabled,
+[data-theme="eink"] .paper-btn[aria-disabled="true"] { border: 2px dashed var(--paper-components-button-disabled-text); }
+/* Pressed = full inversion, which reads instantly on a slow panel. */
+[data-theme="eink"] .paper-btn--secondary:active,
+[data-theme="eink"] .paper-btn--tertiary:active,
+[data-theme="eink"] .paper-btn--destructive:active {
+  --_bg-pressed: var(--paper-color-ink-15);
+  color: var(--paper-color-ink-0);
+}
+/* Thin strokes break up on e-paper: heavier body text. */
+[data-theme="eink"] .paper-list__title,
+[data-theme="eink"] .paper-input,
+[data-theme="eink"] .paper-status { font-weight: 500; }
+
+@media (update: slow), (monochrome) {
+  :root:not([data-theme]) .paper-card,
+  :root:not([data-theme]) .paper-status { border: 2px solid var(--paper-borders-colors-active); }
+  :root:not([data-theme]) .paper-dialog { box-shadow: none; border-width: 3px; }
+}
+
+@media (update: slow), (prefers-reduced-motion: reduce) {
+  .paper-btn, .paper-switch, .paper-switch::after { transition: none; }
+}

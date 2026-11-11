@@ -17,8 +17,26 @@ of *Papper (Design library) (Community)*.
 | Effect style `slight-shadow` | 1 | `--paper-shadow-slight-shadow` |
 | Gradient styles `gradient/light`, `gradient/dark` | 2 | `--paper-gradient-light`, `--paper-gradient-dark` |
 
-The system has **two independent axes**: theme (`light`/`dark`) and accent
-palette. Semantic tokens alias the palette, which aliases primitives, so
+On top of the Figma export, `tokens/extensions.json` adds local tokens. It is merged at build time, so re-exporting from Figma never overwrites it:
+
+| Extension | Output |
+|---|---|
+| **`eink` theme**: a third Tokens mode for e-paper. Uses only opaque grays on the 16-level E Ink grid, with no shadows, translucency or motion | `data-theme="eink"`, applied automatically under `@media (update: slow), (monochrome)` when no theme is set |
+| **`graphite` palette**: neutral gray accents that follow light and dark mode | `data-palette="graphite"` |
+| **`paper` palette**: warm paper surfaces (`#f7f3eb`), plus `signal/accent` (ember) and `signal/positive` (sage) | `data-palette="paper"`, `--paper-signal-*` |
+| `color/ink/0…15` primitives (paper white to full ink) and `color/graphite/*` | `--paper-color-ink-*`, `--paper-color-graphite-*` |
+| 95 component and semantic tokens: button/CTA, input, switch, segmented control, list, badge, status, progress, dialog, tab bar, task row, date strip, add button, motion | `--paper-components-*`, `--paper-signal-*`, `--paper-motion-*` |
+| 4 extra text styles: `Sans serif/Display`, `Sans serif/List title`, `Mono/Overline`, `Mono/Meta` | `.paper-text-*` |
+| Font roles and a bundleable `device` typeface set (Inter, Literata, IBM Plex Mono, all OFL) | `--paper-font-sans/serif/display/mono`, `data-typeface="device"` |
+
+`dist/components.css` turns those tokens into ready-made classes (`.paper-btn`, `.paper-input`, `.paper-switch` and more). See [docs/components.md](docs/components.md). For the typeface research behind the `device` set, see [docs/research/paper-device-fonts.md](docs/research/paper-device-fonts.md).
+
+![Components in the eink theme](docs/components-eink.png)
+
+![Planner patterns in the paper palette](docs/planner-paper.png)
+
+The system has **independent axes**: theme (`light`/`dark`/`eink`), accent
+palette, and typeface (`default`/`device`). Semantic tokens alias the palette, which aliases primitives, so
 `fonts/main` is neutral 700 in light mode and the palette's *vibrant* colour in
 dark mode.
 
@@ -28,7 +46,8 @@ dark mode.
 
 ```html
 <link rel="stylesheet" href="dist/tokens.css">
-<html data-theme="dark" data-palette="pink">
+<link rel="stylesheet" href="dist/components.css">  <!-- optional -->
+<html data-theme="eink" data-palette="graphite" data-typeface="device">
 ```
 
 ```css
@@ -55,26 +74,39 @@ resolveTokens('dark', 'lavanda')['fonts/main']; // '#f5d6e6'
 tokens.light.peach['components/card/main-card-radius']; // 35
 ```
 
-`dist/tokens.json` contains the same data (all 8 theme × palette combinations,
+`dist/tokens.json` contains the same data (all 18 theme × palette combinations,
 fully resolved).
 
 ### Fonts
 
-The styles use **SF Pro**, **New York**, **Hacky** and **IBM Plex Mono**. None
-are bundled: SF Pro and New York ship with Apple platforms, Hacky must be
-licensed separately, and IBM Plex Mono is on Google Fonts. Each stack falls back
-to system fonts. Font weights are derived from the Figma style names (SF Pro
-Semibold = 590).
+Text styles map each Figma family to a role (`sans`, `serif`, `display`, `mono`)
+and use `var(--paper-font-<role>)`, so one attribute swaps every typeface.
+
+| Role | `default` (Figma) | `device` (`data-typeface="device"`) |
+|---|---|---|
+| sans | SF Pro | Inter |
+| serif | New York | Literata |
+| display | Hacky | Literata |
+| mono | IBM Plex Mono | IBM Plex Mono |
+
+No fonts are bundled. **SF Pro and New York are licensed only for Apple
+platforms and Hacky is commercial**, so on Linux or Android edge devices use the
+`device` set and ship its OFL font files with your firmware. Font weights are
+derived from the Figma style names (SF Pro Semibold = 590).
 
 ## Layout
 
 ```
-figma/variables.json          raw export (source of truth: modes + aliases)
+figma/variables.json          raw Figma export (modes + aliases), never hand-edited
+tokens/extensions.json        local layer: eink theme, graphite palette, component tokens, fonts
+components/components.css     component classes (copied to dist/components.css)
 scripts/lib.mjs               transforms (pure, unit-tested)
 scripts/build.mjs             writes dist/
 scripts/figma-export.plugin.js  re-export script (Figma Plugin API)
 dist/                         generated, committed for direct use
-docs/index.html               live demo with theme/palette switcher
+docs/index.html               live demo: theme/palette/typeface switcher + component gallery
+docs/components.md            component and CTA guidelines
+docs/research/                paper-device typeface research
 test/                         node:test suite
 ```
 
@@ -86,7 +118,9 @@ code instead:
 1. Run `scripts/figma-export.plugin.js` against file `gVnF1G3vYFO74d7UeyaIp7`,
    either through the Figma MCP `use_figma` tool or as a scratch plugin.
 2. Save the returned JSON over `figma/variables.json`.
-3. `npm run build && npm test`, then commit.
+3. `npm run build && npm test`, then commit. `tokens/extensions.json` is
+   layered on at build time. If Figma renames a variable that an extension
+   references, the build fails with the name.
 
 ## Development
 

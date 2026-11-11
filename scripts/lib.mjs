@@ -2,20 +2,80 @@
 // to CSS / JS token outputs. No I/O here so everything is unit-testable.
 
 export const PREFIX = 'paper';
-export const THEMES = ['light', 'dark'];
-export const PALETTES = ['peach', 'pink', 'grayblue', 'lavanda'];
+export const THEMES = ['light', 'dark', 'eink'];
+export const PALETTES = ['peach', 'pink', 'grayblue', 'lavanda', 'graphite', 'paper'];
 
 // Which axis selects the mode for each Figma collection.
 const MODE_AXIS = { Primitives: 'fixed', Tokens: 'theme', Colors: 'palette' };
 
-const FONT_FALLBACKS = {
-  'SF Pro': '-apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-  'New York': 'ui-serif, Georgia, serif',
-  'New York Medium': 'ui-serif, Georgia, serif',
-  'New York Extra Large': 'ui-serif, Georgia, serif',
-  Hacky: 'ui-serif, Georgia, serif',
-  'IBM Plex Mono': 'ui-monospace, SFMono-Regular, Menlo, monospace',
+// Figma font family -> font role. Text styles are emitted against role custom
+// properties (--paper-font-<role>) so a whole device can swap typefaces in one place.
+export const FONT_ROLES = {
+  'SF Pro': 'sans',
+  'New York': 'serif',
+  'New York Medium': 'serif',
+  'New York Extra Large': 'serif',
+  Hacky: 'display',
+  'IBM Plex Mono': 'mono',
 };
+
+// Optional text-style fields (extensions only; Figma exports leave them out).
+function textExtras(t) {
+  return [
+    `  line-height: ${t.lineHeight ?? 'normal'};`,
+    t.letterSpacing !== undefined && `  letter-spacing: ${t.letterSpacing}em;`,
+    t.textTransform && `  text-transform: ${t.textTransform};`,
+  ].filter(Boolean).join('\n');
+}
+
+// Token-name prefix -> CSS unit for FLOAT variables (default px).
+const FLOAT_UNITS = [['motion/', 'ms']];
+
+/**
+ * Layer tokens/extensions.json onto a raw Figma export. Returns a new source;
+ * the input is not mutated. Extensions can add modes to a collection, add new
+ * variables, and set values for existing variables in the added modes. Any
+ * existing variable without a value for an added mode falls back to the
+ * collection's default mode (so the fallback keeps the Figma alias chain).
+ */
+export function applyExtensions(source, ext) {
+  if (!ext) return source;
+  const out = structuredClone(source);
+  const col = name => {
+    const c = out.collections.find(c => c.name === name);
+    if (!c) throw new Error(`Extension targets unknown collection "${name}"`);
+    return c;
+  };
+  for (const [name, modes] of Object.entries(ext.modes ?? {})) {
+    const c = col(name);
+    for (const mode of modes) {
+      if (c.modes.includes(mode)) throw new Error(`Mode "${mode}" already exists in ${name}`);
+      const values = ext.modeValues?.[name]?.[mode] ?? {};
+      const known = new Set(c.variables.map(v => v.n));
+      for (const n of Object.keys(values)) {
+        if (!known.has(n)) throw new Error(`modeValues.${name}.${mode} sets unknown variable "${n}"`);
+      }
+      for (const v of c.variables) v.v[mode] = v.n in values ? values[v.n] : structuredClone(v.v[c.defaultMode]);
+      c.modes.push(mode);
+    }
+  }
+  for (const [name, vars] of Object.entries(ext.variables ?? {})) {
+    const c = col(name);
+    const known = new Set(c.variables.map(v => v.n));
+    for (const v of vars) {
+      if (known.has(v.n)) throw new Error(`Extension variable "${v.n}" already exists in ${name}`);
+      const missing = c.modes.filter(m => !(m in v.v));
+      if (missing.length) throw new Error(`Extension variable "${v.n}" has no value for mode(s) ${missing.join(', ')}`);
+      c.variables.push(structuredClone(v));
+    }
+  }
+  for (const style of ext.styles?.text ?? []) {
+    if (out.styles.text.some(t => t.n === style.n)) throw new Error(`Extension text style "${style.n}" already exists`);
+    out.styles.text.push(structuredClone(style));
+  }
+  if (ext.fonts) out.fonts = structuredClone(ext.fonts);
+  return out;
+}
 
 export function slug(name) {
   return name
@@ -33,8 +93,13 @@ export function cssName(figmaName) {
 
 function index(source) {
   const byName = new Map();
+  const expected = { theme: THEMES, palette: PALETTES };
   for (const col of source.collections) {
     if (!(col.name in MODE_AXIS)) throw new Error(`Unknown collection "${col.name}" — add it to MODE_AXIS`);
+    const want = expected[MODE_AXIS[col.name]];
+    if (want && want.join() !== col.modes.join()) {
+      throw new Error(`${col.name} modes [${col.modes}] do not match [${want}] — did you forget applyExtensions()?`);
+    }
     for (const v of col.variables) byName.set(v.n, { col, v });
   }
   return byName;
@@ -72,7 +137,10 @@ export function resolveAll(source) {
 
 function cssValue(variable, value) {
   if (isAlias(value)) return `var(${cssName(value.alias)})`;
-  if (variable.t === 'FLOAT') return `${value}px`;
+  if (variable.t === 'FLOAT') {
+    const unit = FLOAT_UNITS.find(([prefix]) => variable.n.startsWith(prefix))?.[1] ?? 'px';
+    return `${value}${unit}`;
+  }
   return String(value);
 }
 
@@ -97,17 +165,30 @@ export function shadowCss(effects) {
     .join(', ');
 }
 
-export function fontStack(family) {
-  const fallback = FONT_FALLBACKS[family] ?? 'sans-serif';
-  return `"${family}", ${fallback}`;
+export function fontRole(family) {
+  const role = FONT_ROLES[family];
+  if (!role) throw new Error(`No font role for Figma family "${family}" — add it to FONT_ROLES`);
+  return role;
 }
+
+const quoteFamily = f => (/^(ui-|-apple-|system-ui|serif$|sans-serif$|monospace$|BlinkMacSystemFont$)/.test(f) ? f : `"${f}"`);
+export const stackCss = families => families.map(quoteFamily).join(', ');
+
+/** Concrete CSS font-family stack for a Figma family under the default typeface set. */
+export function fontStack(family, fonts) {
+  return stackCss(fonts.stacks.default[fontRole(family)]);
+}
+
+const fontDecls = stacks => Object.entries(stacks).map(([role, fams]) => `  --${PREFIX}-font-${role}: ${stackCss(fams)};`).join('\n');
 
 export function buildCss(source) {
   const col = name => source.collections.find(c => c.name === name);
   const prim = col('Primitives');
   const tokens = col('Tokens');
   const colors = col('Colors');
-  const differsInDark = v => JSON.stringify(v.v.light) !== JSON.stringify(v.v.dark);
+  const differsFrom = (mode, base = 'light') => v => JSON.stringify(v.v[base]) !== JSON.stringify(v.v[mode]);
+  if (!source.fonts) throw new Error('source.fonts missing — build from applyExtensions(figma, extensions)');
+  const { stacks } = source.fonts;
 
   // Custom properties holding var() are substituted where they are declared,
   // so EVERY element that sets data-theme or data-palette must re-declare the
@@ -115,7 +196,8 @@ export function buildCss(source) {
   // that differ. The descendant selector (higher specificity) makes a
   // palette-only subtree inside a dark page stay dark.
   const lightSel = ':root,\n[data-theme],\n[data-palette]';
-  const darkSel = '[data-theme="dark"],\n[data-theme="dark"] [data-palette]:not([data-theme])';
+  const themeSel = t => `[data-theme="${t}"],\n[data-theme="${t}"] [data-palette]:not([data-theme])`;
+  const otherThemes = THEMES.filter(t => t !== 'light');
 
   const blocks = [
     `/* Generated by scripts/build.mjs from figma/variables.json — do not edit. */`,
@@ -125,13 +207,17 @@ export function buildCss(source) {
       return `/* Palette: ${p} */\n${sel} {\n${declarations(colors.variables, p)}\n}`;
     }),
     `/* Semantic tokens: light (default) */\n${lightSel} {\n${declarations(tokens.variables, 'light')}\n}`,
-    `/* Semantic tokens: dark (only values that differ from light) */\n${darkSel} {\n${declarations(tokens.variables, 'dark', differsInDark)}\n}`,
+    ...otherThemes.map(t =>
+      `/* Semantic tokens: ${t} (only values that differ from light) */\n${themeSel(t)} {\n${declarations(tokens.variables, t, differsFrom(t))}\n}`),
+    `/* E-paper screens (slow refresh or monochrome) get the eink theme automatically\n   unless the page picks a theme explicitly. */\n@media (update: slow), (monochrome) {\n  :root:not([data-theme]),\n  :root:not([data-theme]) [data-palette]:not([data-theme]) {\n${declarations(tokens.variables, 'eink', differsFrom('eink')).replace(/^/gm, '  ')}\n  }\n}`,
+    `/* Typefaces: text styles reference these roles. data-typeface swaps the whole set. */\n:root {\n${fontDecls(stacks.default)}\n}\n${Object.entries(stacks).filter(([k]) => k !== 'default').map(([k, st]) =>
+      `[data-typeface="${k}"] {\n${fontDecls(st)}\n}`).join('\n')}`,
     `/* Effects & gradients */\n:root {\n${[
       ...source.styles.effect.map(e => `  --${PREFIX}-shadow-${slug(e.n)}: ${shadowCss(e.effects)};`),
       ...source.styles.paint.map(p => `  --${PREFIX}-${slug(p.n)}: ${gradientCss(p.paints[0])};`),
     ].join('\n')}\n}`,
     `/* Typography */\n${source.styles.text.map(t =>
-      `.${PREFIX}-text-${slug(t.n)} {\n  font-family: ${fontStack(t.family)};\n  font-size: ${t.size}px;\n  font-weight: ${t.weight};\n  line-height: normal;\n}`).join('\n')}`,
+      `.${PREFIX}-text-${slug(t.n)} {\n  font-family: var(--${PREFIX}-font-${fontRole(t.family)});\n  font-size: ${t.size}px;\n  font-weight: ${t.weight};\n${textExtras(t)}\n}`).join('\n')}`,
   ];
   return blocks.join('\n\n') + '\n';
 }
@@ -139,13 +225,18 @@ export function buildCss(source) {
 export function buildJs(source) {
   const resolved = resolveAll(source);
   const primitives = Object.fromEntries(
-    source.collections.find(c => c.name === 'Primitives').variables.map(v => [v.n, v.v.Value]));
+    source.collections.find(c => c.name === 'Primitives').variables.map(v => [v.n, resolved.light.peach[v.n]]));
   const typography = Object.fromEntries(source.styles.text.map(t => [t.n, {
-    fontFamily: fontStack(t.family), fontSize: t.size, fontWeight: t.weight,
+    fontRole: fontRole(t.family), fontFamily: fontStack(t.family, source.fonts), fontSize: t.size, fontWeight: t.weight,
+    ...(t.lineHeight !== undefined && { lineHeight: t.lineHeight }),
+    ...(t.letterSpacing !== undefined && { letterSpacing: `${t.letterSpacing}em` }),
+    ...(t.textTransform && { textTransform: t.textTransform }),
   }]));
+  const fonts = Object.fromEntries(Object.entries(source.fonts.stacks).map(([k, st]) =>
+    [k, Object.fromEntries(Object.entries(st).map(([role, fams]) => [role, stackCss(fams)]))]));
   const shadows = Object.fromEntries(source.styles.effect.map(e => [e.n, shadowCss(e.effects)]));
   const gradients = Object.fromEntries(source.styles.paint.map(p => [p.n, gradientCss(p.paints[0])]));
-  const data = { themes: THEMES, palettes: PALETTES, primitives, tokens: resolved, typography, shadows, gradients };
+  const data = { themes: THEMES, palettes: PALETTES, primitives, tokens: resolved, typography, fonts, shadows, gradients };
 
   const js = `// Generated by scripts/build.mjs from figma/variables.json — do not edit.
 export const themes = ${JSON.stringify(THEMES)};
@@ -153,6 +244,7 @@ export const palettes = ${JSON.stringify(PALETTES)};
 export const primitives = ${JSON.stringify(primitives, null, 2)};
 export const tokens = ${JSON.stringify(resolved, null, 2)};
 export const typography = ${JSON.stringify(typography, null, 2)};
+export const fonts = ${JSON.stringify(fonts, null, 2)};
 export const shadows = ${JSON.stringify(shadows, null, 2)};
 export const gradients = ${JSON.stringify(gradients, null, 2)};
 
@@ -173,7 +265,9 @@ export declare const themes: Theme[];
 export declare const palettes: Palette[];
 export declare const primitives: Record<string, string>;
 export declare const tokens: Record<Theme, Record<Palette, TokenSet>>;
-export declare const typography: Record<string, { fontFamily: string; fontSize: number; fontWeight: number }>;
+export type FontRole = 'sans' | 'serif' | 'display' | 'mono';
+export declare const typography: Record<string, { fontRole: FontRole; fontFamily: string; fontSize: number; fontWeight: number; lineHeight?: number; letterSpacing?: string; textTransform?: string }>;
+export declare const fonts: Record<string, Record<FontRole, string>>;
 export declare const shadows: Record<string, string>;
 export declare const gradients: Record<string, string>;
 export declare function resolveTokens(theme?: Theme, palette?: Palette): TokenSet;
