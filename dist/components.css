@@ -321,6 +321,251 @@ button.paper-list__row { width: 100%; border-left: 0; border-right: 0; border-to
 .paper-dialog__title { margin: 0 0 8px; font: 700 20px/1.25 var(--paper-font-sans); }
 .paper-dialog__body { margin: 0 0 20px; color: var(--paper-fonts-secondary); }
 
+/* ==========================================================================
+ * Editorial / planner patterns
+ * Hairline-divided lists, mono uppercase labels, round checks, one signal
+ * accent. Pair with data-palette="paper" for the warm paper look.
+ * ========================================================================== */
+
+/* Overline: "WED 12 — WEEK 24", section labels, meta counts. */
+.paper-overline {
+  margin: 0;
+  font: 500 12px/1.2 var(--paper-font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-fonts-secondary);
+}
+
+/* Page header: overline + display title + optional meta, closed by a hairline. */
+.paper-page-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 8px 16px;
+  padding: 32px 24px 24px;
+  border-bottom: 1px solid var(--paper-borders-colors-hairline);
+}
+.paper-page-header > .paper-overline:first-child { grid-column: 1 / -1; }
+.paper-page-header__title {
+  margin: 0;
+  font: 590 44px/1.1 var(--paper-font-sans);
+  letter-spacing: -0.02em;
+  color: var(--paper-fonts-accent);
+}
+.paper-page-header__meta { padding-bottom: 6px; }
+
+/* Section: overline label over a hairline-divided group. */
+.paper-section { padding: 28px 24px 0; }
+.paper-section > .paper-overline { padding-bottom: 12px; border-bottom: 1px solid var(--paper-borders-colors-hairline); }
+
+/* Task row: round check, title, mono time, optional tag. */
+.paper-task {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--paper-components-task-check-size) 1fr auto;
+  align-items: start;
+  gap: 4px 16px;
+  min-height: 64px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--paper-borders-colors-hairline);
+  color: var(--paper-fonts-accent);
+}
+.paper-task__check {
+  -webkit-appearance: none;
+  appearance: none;
+  grid-row: span 2;
+  display: grid;
+  place-content: center;
+  width: var(--paper-components-task-check-size);
+  height: var(--paper-components-task-check-size);
+  margin: 0;
+  border: 1.5px solid var(--paper-components-task-check-border);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.paper-task__check::before { /* enlarge hit area to 48px without moving the layout */
+  content: "";
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  margin: -10px 0 0 -10px;
+}
+.paper-task__check:checked { border-color: var(--paper-signal-positive); background: var(--paper-signal-positive); }
+.paper-task__check:checked::after {
+  content: "";
+  width: 10px;
+  height: 5px;
+  margin-top: -3px;
+  border: solid var(--paper-signal-on-positive);
+  border-width: 0 0 2px 2px;
+  transform: rotate(-45deg);
+}
+.paper-task__check:focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 3px;
+}
+.paper-task__title { font: 500 18px/1.3 var(--paper-font-sans); }
+.paper-task__time {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 400 13px/1.2 var(--paper-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--paper-fonts-secondary);
+}
+.paper-task__aside { grid-row: 1 / span 2; grid-column: 3; align-self: center; }
+.paper-task--done .paper-task__title { color: var(--paper-fonts-muted); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.paper-task--current::before { /* accent bar in the gutter */
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -24px;
+  width: var(--paper-components-task-current-bar-width);
+  background: var(--paper-components-task-current-bar);
+}
+.paper-task--current .paper-task__time { color: var(--paper-signal-accent-text); }
+.paper-task--muted { color: var(--paper-fonts-muted); }
+
+/* Tag: tiny filled label ("NOW"). Dark text on the accent keeps it above 4.5:1. */
+.paper-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: var(--paper-signal-accent);
+  color: var(--paper-signal-on-accent);
+  font: 600 10px/1 var(--paper-font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Tab bar: mono uppercase labels, accent underline on the current tab. */
+.paper-tabbar {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  border-top: 1px solid var(--paper-borders-colors-hairline);
+  background: inherit;
+}
+.paper-tabbar > a,
+.paper-tabbar > button {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--paper-components-tabbar-height);
+  min-width: 48px;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  color: var(--paper-components-tabbar-text);
+  font: 500 12px/1 var(--paper-font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.paper-tabbar > [aria-current="page"],
+.paper-tabbar > [aria-selected="true"] { color: var(--paper-components-tabbar-text-active); font-weight: 600; }
+.paper-tabbar > [aria-current="page"]::after,
+.paper-tabbar > [aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  height: var(--paper-components-tabbar-indicator-height);
+  border-radius: 2px;
+  background: var(--paper-components-tabbar-indicator);
+}
+.paper-tabbar > :focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: -4px;
+}
+
+/* Date strip: day label, round date, dot count. */
+.paper-datestrip { display: flex; justify-content: space-between; gap: 4px; padding: 20px 24px; }
+.paper-date {
+  -webkit-appearance: none;
+  appearance: none;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  min-width: 48px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--paper-fonts-accent);
+  cursor: pointer;
+}
+.paper-date__day { font: 500 11px/1 var(--paper-font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper-fonts-secondary); }
+.paper-date__num {
+  display: grid;
+  place-content: center;
+  width: var(--paper-components-date-size);
+  height: var(--paper-components-date-size);
+  border: 1.5px solid var(--paper-components-date-ring);
+  border-radius: 50%;
+  font: 400 18px/1 var(--paper-font-mono);
+}
+.paper-date[aria-pressed="true"] .paper-date__day,
+.paper-date[aria-current="date"] .paper-date__day { color: var(--paper-fonts-accent); font-weight: 600; }
+.paper-date[aria-pressed="true"] .paper-date__num { border: 2px solid var(--paper-components-date-ring-selected); color: var(--paper-signal-accent-text); }
+.paper-date:disabled { color: var(--paper-fonts-muted); cursor: default; }
+.paper-date__dots { display: flex; gap: 3px; height: 5px; }
+.paper-date__dots > i { width: 5px; height: 5px; border-radius: 50%; background: var(--paper-signal-accent); }
+.paper-date:focus-visible { outline: none; }
+.paper-date:focus-visible .paper-date__num {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Project / metric row: title + mono counts + thin progress. */
+.paper-meter {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 16px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--paper-borders-colors-hairline);
+  color: var(--paper-fonts-accent);
+}
+.paper-meter__title { font: 500 22px/1.25 var(--paper-font-sans); }
+.paper-meter .paper-progress {
+  grid-column: 1 / -1;
+  height: var(--paper-components-progress-height-thin);
+  --paper-components-progress-fill: var(--paper-components-progress-fill-positive);
+}
+.paper-meter--muted { color: var(--paper-fonts-muted); }
+.paper-meter--muted .paper-overline { color: var(--paper-fonts-muted); }
+
+/* Floating action button. */
+.paper-fab {
+  -webkit-appearance: none;
+  appearance: none;
+  display: grid;
+  place-content: center;
+  width: var(--paper-components-fab-size);
+  height: var(--paper-components-fab-size);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paper-components-fab-surface);
+  color: var(--paper-components-fab-icon);
+  box-shadow: var(--paper-shadow-slight-shadow);
+  cursor: pointer;
+}
+.paper-fab svg { width: 30px; height: 30px; }
+.paper-fab:active { transform: scale(0.96); }
+.paper-fab:focus-visible {
+  outline: var(--paper-components-button-focus-ring-width) solid var(--paper-components-button-focus-ring);
+  outline-offset: 3px;
+}
+
 /* ---------- E-paper adjustments ----------
  * Applied for the explicit eink theme and, when no theme is set, on screens
  * that report slow refresh or a monochrome frame buffer (same rule as tokens.css).
@@ -335,6 +580,11 @@ button.paper-list__row { width: 100%; border-left: 0; border-right: 0; border-to
 [data-theme="eink"] .paper-status { border: 2px solid var(--paper-borders-colors-active); }
 [data-theme="eink"] .paper-card--task { border-width: 1px; }
 [data-theme="eink"] .paper-dialog { box-shadow: none; border-width: 3px; }
+[data-theme="eink"] .paper-fab { box-shadow: none; }
+[data-theme="eink"] .paper-fab:active { transform: none; background: var(--paper-color-ink-0); color: var(--paper-color-ink-15); outline: 3px solid var(--paper-color-ink-15); }
+[data-theme="eink"] .paper-task__check { border-width: 2px; }
+[data-theme="eink"] .paper-date__num { border-width: 2px; }
+[data-theme="eink"] .paper-date[aria-pressed="true"] .paper-date__num { background: var(--paper-color-ink-15); color: var(--paper-color-ink-0); }
 [data-theme="eink"] .paper-progress { outline: 2px solid var(--paper-borders-colors-active); outline-offset: 1px; }
 [data-theme="eink"] .paper-btn--tertiary { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; }
 [data-theme="eink"] .paper-btn--destructive { border-width: 3px; }

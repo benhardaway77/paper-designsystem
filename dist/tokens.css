@@ -85,6 +85,17 @@
   --paper-color-graphite-300: var(--paper-color-ink-2);
   --paper-color-graphite-400: var(--paper-color-ink-3);
   --paper-color-graphite-400-half: #cccccc80;
+  --paper-color-paper-200: #f7f3eb;
+  --paper-color-paper-300: #ece6d9;
+  --paper-color-paper-400: #efe9dc;
+  --paper-color-paper-400-half: #efe9dc80;
+  --paper-color-ember-500: #f0652b;
+  --paper-color-ember-700: #a33d14;
+  --paper-color-ember-300: #f58a5c;
+  --paper-color-sage-500: #7c8a6e;
+  --paper-color-sage-300: #a3b195;
+  --paper-color-neutral-translucents-black-12: #0000001f;
+  --paper-color-neutral-translucents-white-12: #ffffff1f;
 }
 
 /* Palette: peach */
@@ -126,6 +137,14 @@
   --paper-accent: var(--paper-color-graphite-300);
   --paper-vibrant: var(--paper-color-graphite-400);
   --paper-translucent: var(--paper-color-graphite-400-half);
+}
+
+/* Palette: paper */
+[data-palette="paper"] {
+  --paper-primary: var(--paper-color-paper-200);
+  --paper-accent: var(--paper-color-paper-300);
+  --paper-vibrant: var(--paper-color-paper-400);
+  --paper-translucent: var(--paper-color-paper-400-half);
 }
 
 /* Semantic tokens: light (default) */
@@ -206,6 +225,13 @@
   --paper-components-logo-accent: var(--paper-color-coral-700);
   --paper-components-logo-surface: var(--paper-color-green-50);
   --paper-components-fullview-handle: var(--paper-pairs-tokens-white60-color400half);
+  --paper-signal-accent: var(--paper-color-ember-500);
+  --paper-signal-on-accent: var(--paper-color-neutral-1000);
+  --paper-signal-accent-text: var(--paper-color-ember-700);
+  --paper-signal-positive: var(--paper-color-sage-500);
+  --paper-signal-on-positive: var(--paper-color-neutral-000);
+  --paper-fonts-muted: var(--paper-color-neutral-500);
+  --paper-borders-colors-hairline: var(--paper-color-neutral-translucents-black-12);
   --paper-components-button-primary-surface: var(--paper-color-neutral-700);
   --paper-components-button-primary-text: var(--paper-color-neutral-000);
   --paper-components-button-primary-surface-pressed: var(--paper-color-neutral-900);
@@ -275,6 +301,23 @@
   --paper-components-dialog-scrim: var(--paper-color-neutral-translucents-black-40);
   --paper-components-dialog-border: #00000000;
   --paper-components-dialog-radius: 24px;
+  --paper-components-tabbar-text: var(--paper-fonts-muted);
+  --paper-components-tabbar-text-active: var(--paper-fonts-accent);
+  --paper-components-tabbar-indicator: var(--paper-signal-accent);
+  --paper-components-tabbar-indicator-height: 3px;
+  --paper-components-tabbar-height: 56px;
+  --paper-components-task-check-border: var(--paper-fonts-muted);
+  --paper-components-task-check-size: 28px;
+  --paper-components-task-current-bar: var(--paper-signal-accent);
+  --paper-components-task-current-bar-width: 3px;
+  --paper-components-date-ring: var(--paper-borders-colors-hairline);
+  --paper-components-date-ring-selected: var(--paper-signal-accent);
+  --paper-components-date-size: 52px;
+  --paper-components-fab-surface: var(--paper-signal-accent);
+  --paper-components-fab-icon: var(--paper-color-neutral-000);
+  --paper-components-fab-size: 72px;
+  --paper-components-progress-fill-positive: var(--paper-signal-positive);
+  --paper-components-progress-height-thin: 4px;
   --paper-motion-duration-fast: 120ms;
   --paper-motion-duration-base: 200ms;
 }
@@ -315,6 +358,10 @@
   --paper-borders-shadow-or-border-border-thick: 0px;
   --paper-icon-secondary: var(--paper-pairs-tokens-neutral700-color400half);
   --paper-components-logo-surface: #00000000;
+  --paper-signal-accent-text: var(--paper-color-ember-300);
+  --paper-signal-positive: var(--paper-color-sage-300);
+  --paper-signal-on-positive: var(--paper-color-neutral-900);
+  --paper-borders-colors-hairline: var(--paper-color-neutral-translucents-white-12);
   --paper-components-button-primary-surface: var(--paper-vibrant);
   --paper-components-button-primary-text: var(--paper-color-neutral-900);
   --paper-components-button-primary-surface-pressed: var(--paper-accent);
@@ -411,6 +458,13 @@
   --paper-components-logo-accent: var(--paper-color-ink-10);
   --paper-components-logo-surface: var(--paper-color-ink-0);
   --paper-components-fullview-handle: var(--paper-color-ink-6);
+  --paper-signal-accent: var(--paper-color-ink-15);
+  --paper-signal-on-accent: var(--paper-color-ink-0);
+  --paper-signal-accent-text: var(--paper-color-ink-15);
+  --paper-signal-positive: var(--paper-color-ink-15);
+  --paper-signal-on-positive: var(--paper-color-ink-0);
+  --paper-fonts-muted: var(--paper-color-ink-8);
+  --paper-borders-colors-hairline: var(--paper-color-ink-8);
   --paper-components-button-primary-surface: var(--paper-color-ink-15);
   --paper-components-button-primary-text: var(--paper-color-ink-0);
   --paper-components-button-primary-surface-pressed: var(--paper-color-ink-12);
@@ -462,6 +516,19 @@
   --paper-components-dialog-surface: var(--paper-color-ink-0);
   --paper-components-dialog-scrim: #00000000;
   --paper-components-dialog-border: var(--paper-color-ink-15);
+  --paper-components-tabbar-text: var(--paper-color-ink-9);
+  --paper-components-tabbar-text-active: var(--paper-color-ink-15);
+  --paper-components-tabbar-indicator: var(--paper-color-ink-15);
+  --paper-components-tabbar-indicator-height: 4px;
+  --paper-components-task-check-border: var(--paper-color-ink-15);
+  --paper-components-task-current-bar: var(--paper-color-ink-15);
+  --paper-components-task-current-bar-width: 6px;
+  --paper-components-date-ring: var(--paper-color-ink-6);
+  --paper-components-date-ring-selected: var(--paper-color-ink-15);
+  --paper-components-fab-surface: var(--paper-color-ink-15);
+  --paper-components-fab-icon: var(--paper-color-ink-0);
+  --paper-components-progress-fill-positive: var(--paper-color-ink-15);
+  --paper-components-progress-height-thin: 6px;
   --paper-motion-duration-fast: 0ms;
   --paper-motion-duration-base: 0ms;
 }
@@ -535,6 +602,13 @@
     --paper-components-logo-accent: var(--paper-color-ink-10);
     --paper-components-logo-surface: var(--paper-color-ink-0);
     --paper-components-fullview-handle: var(--paper-color-ink-6);
+    --paper-signal-accent: var(--paper-color-ink-15);
+    --paper-signal-on-accent: var(--paper-color-ink-0);
+    --paper-signal-accent-text: var(--paper-color-ink-15);
+    --paper-signal-positive: var(--paper-color-ink-15);
+    --paper-signal-on-positive: var(--paper-color-ink-0);
+    --paper-fonts-muted: var(--paper-color-ink-8);
+    --paper-borders-colors-hairline: var(--paper-color-ink-8);
     --paper-components-button-primary-surface: var(--paper-color-ink-15);
     --paper-components-button-primary-text: var(--paper-color-ink-0);
     --paper-components-button-primary-surface-pressed: var(--paper-color-ink-12);
@@ -586,6 +660,19 @@
     --paper-components-dialog-surface: var(--paper-color-ink-0);
     --paper-components-dialog-scrim: #00000000;
     --paper-components-dialog-border: var(--paper-color-ink-15);
+    --paper-components-tabbar-text: var(--paper-color-ink-9);
+    --paper-components-tabbar-text-active: var(--paper-color-ink-15);
+    --paper-components-tabbar-indicator: var(--paper-color-ink-15);
+    --paper-components-tabbar-indicator-height: 4px;
+    --paper-components-task-check-border: var(--paper-color-ink-15);
+    --paper-components-task-current-bar: var(--paper-color-ink-15);
+    --paper-components-task-current-bar-width: 6px;
+    --paper-components-date-ring: var(--paper-color-ink-6);
+    --paper-components-date-ring-selected: var(--paper-color-ink-15);
+    --paper-components-fab-surface: var(--paper-color-ink-15);
+    --paper-components-fab-icon: var(--paper-color-ink-0);
+    --paper-components-progress-fill-positive: var(--paper-color-ink-15);
+    --paper-components-progress-height-thin: 6px;
     --paper-motion-duration-fast: 0ms;
     --paper-motion-duration-base: 0ms;
   }
@@ -714,4 +801,32 @@
   font-size: 13px;
   font-weight: 500;
   line-height: normal;
+}
+.paper-text-sans-serif-display {
+  font-family: var(--paper-font-sans);
+  font-size: 44px;
+  font-weight: 590;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.paper-text-sans-serif-list-title {
+  font-family: var(--paper-font-sans);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.paper-text-mono-overline {
+  font-family: var(--paper-font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.paper-text-mono-meta {
+  font-family: var(--paper-font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.04em;
 }

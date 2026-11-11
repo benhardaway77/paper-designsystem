@@ -149,6 +149,49 @@ test('JS output includes every theme and palette', () => {
   assert.equal(data.typography['Sans serif/Body'].fontRole, 'sans');
 });
 
+const luminance = hex => {
+  const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255)
+    .map(c => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => {
+  const [l1, l2] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (l1 + 0.05) / (l2 + 0.05);
+};
+
+test('key text pairs meet WCAG AA (4.5:1) in every theme and palette', () => {
+  const r = resolveAll(source);
+  const pairs = [
+    ['fonts/main', 'surfaces/main/first-layer'],
+    ['components/button/primary-text', 'components/button/primary-surface'],
+    ['components/button/secondary-text', 'components/button/secondary-surface'],
+    ['components/input/text', 'components/input/surface'],
+    ['signal/accent-text', 'surfaces/main/first-layer'],
+    ['signal/on-accent', 'signal/accent'],
+    ['components/segmented/selected-text', 'components/segmented/selected-surface'],
+  ];
+  for (const theme of THEMES) {
+    for (const palette of PALETTES) {
+      const t = r[theme][palette];
+      for (const [fg, bg] of pairs) {
+        const ratio = contrast(t[fg], t[bg]);
+        assert.ok(ratio >= 4.5, `${theme}/${palette}: ${fg} ${t[fg]} on ${bg} ${t[bg]} = ${ratio.toFixed(2)}`);
+      }
+    }
+  }
+});
+
+test('paper palette and extension text styles', () => {
+  const r = resolveAll(source);
+  assert.equal(r.light.paper['surfaces/main/first-layer'], '#f7f3eb');
+  assert.equal(r.light.paper['signal/accent'], '#f0652b');
+  assert.equal(r.eink.paper['signal/accent'], '#000000');
+  const overline = source.styles.text.find(t => t.n === 'Mono/Overline');
+  assert.equal(overline.textTransform, 'uppercase');
+  assert.match(buildCss(source), /\.paper-text-mono-overline {[^}]*letter-spacing: 0\.14em;[^}]*text-transform: uppercase;/);
+  assert.throws(() => applyExtensions(figma, { styles: { text: [{ n: 'Sans serif/Body' }] } }), /already exists/);
+});
+
 test('gradient and shadow styles convert to CSS', () => {
   const light = source.styles.paint.find(p => p.n === 'gradient/light').paints[0];
   assert.equal(gradientCss(light), 'conic-gradient(from 90deg, #f7d9d9 6.5%, #efe1e8 36%, #e1e5ef 58.5%, #f7e1d7 87.5%)');

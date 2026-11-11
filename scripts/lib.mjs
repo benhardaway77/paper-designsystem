@@ -3,7 +3,7 @@
 
 export const PREFIX = 'paper';
 export const THEMES = ['light', 'dark', 'eink'];
-export const PALETTES = ['peach', 'pink', 'grayblue', 'lavanda', 'graphite'];
+export const PALETTES = ['peach', 'pink', 'grayblue', 'lavanda', 'graphite', 'paper'];
 
 // Which axis selects the mode for each Figma collection.
 const MODE_AXIS = { Primitives: 'fixed', Tokens: 'theme', Colors: 'palette' };
@@ -18,6 +18,15 @@ export const FONT_ROLES = {
   Hacky: 'display',
   'IBM Plex Mono': 'mono',
 };
+
+// Optional text-style fields (extensions only; Figma exports leave them out).
+function textExtras(t) {
+  return [
+    `  line-height: ${t.lineHeight ?? 'normal'};`,
+    t.letterSpacing !== undefined && `  letter-spacing: ${t.letterSpacing}em;`,
+    t.textTransform && `  text-transform: ${t.textTransform};`,
+  ].filter(Boolean).join('\n');
+}
 
 // Token-name prefix -> CSS unit for FLOAT variables (default px).
 const FLOAT_UNITS = [['motion/', 'ms']];
@@ -59,6 +68,10 @@ export function applyExtensions(source, ext) {
       if (missing.length) throw new Error(`Extension variable "${v.n}" has no value for mode(s) ${missing.join(', ')}`);
       c.variables.push(structuredClone(v));
     }
+  }
+  for (const style of ext.styles?.text ?? []) {
+    if (out.styles.text.some(t => t.n === style.n)) throw new Error(`Extension text style "${style.n}" already exists`);
+    out.styles.text.push(structuredClone(style));
   }
   if (ext.fonts) out.fonts = structuredClone(ext.fonts);
   return out;
@@ -204,7 +217,7 @@ export function buildCss(source) {
       ...source.styles.paint.map(p => `  --${PREFIX}-${slug(p.n)}: ${gradientCss(p.paints[0])};`),
     ].join('\n')}\n}`,
     `/* Typography */\n${source.styles.text.map(t =>
-      `.${PREFIX}-text-${slug(t.n)} {\n  font-family: var(--${PREFIX}-font-${fontRole(t.family)});\n  font-size: ${t.size}px;\n  font-weight: ${t.weight};\n  line-height: normal;\n}`).join('\n')}`,
+      `.${PREFIX}-text-${slug(t.n)} {\n  font-family: var(--${PREFIX}-font-${fontRole(t.family)});\n  font-size: ${t.size}px;\n  font-weight: ${t.weight};\n${textExtras(t)}\n}`).join('\n')}`,
   ];
   return blocks.join('\n\n') + '\n';
 }
@@ -215,6 +228,9 @@ export function buildJs(source) {
     source.collections.find(c => c.name === 'Primitives').variables.map(v => [v.n, resolved.light.peach[v.n]]));
   const typography = Object.fromEntries(source.styles.text.map(t => [t.n, {
     fontRole: fontRole(t.family), fontFamily: fontStack(t.family, source.fonts), fontSize: t.size, fontWeight: t.weight,
+    ...(t.lineHeight !== undefined && { lineHeight: t.lineHeight }),
+    ...(t.letterSpacing !== undefined && { letterSpacing: `${t.letterSpacing}em` }),
+    ...(t.textTransform && { textTransform: t.textTransform }),
   }]));
   const fonts = Object.fromEntries(Object.entries(source.fonts.stacks).map(([k, st]) =>
     [k, Object.fromEntries(Object.entries(st).map(([role, fams]) => [role, stackCss(fams)]))]));
@@ -250,7 +266,7 @@ export declare const palettes: Palette[];
 export declare const primitives: Record<string, string>;
 export declare const tokens: Record<Theme, Record<Palette, TokenSet>>;
 export type FontRole = 'sans' | 'serif' | 'display' | 'mono';
-export declare const typography: Record<string, { fontRole: FontRole; fontFamily: string; fontSize: number; fontWeight: number }>;
+export declare const typography: Record<string, { fontRole: FontRole; fontFamily: string; fontSize: number; fontWeight: number; lineHeight?: number; letterSpacing?: string; textTransform?: string }>;
 export declare const fonts: Record<string, Record<FontRole, string>>;
 export declare const shadows: Record<string, string>;
 export declare const gradients: Record<string, string>;

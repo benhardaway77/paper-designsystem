@@ -33,6 +33,11 @@
   .components h3 { margin: 0 0 12px; font: 600 13px/1 var(--paper-font-sans); text-transform: uppercase; letter-spacing: .06em; color: var(--paper-fonts-secondary); }
   .device { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
   .device .paper-card { font-family: var(--paper-font-sans); }
+  .phones { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; align-items: start; }
+  .phone { position: relative; overflow: hidden; border-radius: 40px; background: var(--paper-surfaces-main-first-layer); color: var(--paper-fonts-main); font-family: var(--paper-font-sans); }
+  .phone .paper-section { padding-bottom: 8px; }
+  .phone .paper-fab { position: absolute; right: 20px; bottom: 76px; }
+  .phone .meters { padding: 8px 24px 0; }
   .nested { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
 </style>
 </head>
@@ -40,7 +45,7 @@
 <header>
   <h1 class="paper-text-serif-header">Papper tokens</h1>
   <label>Theme <select id="theme"><option>light</option><option>dark</option><option>eink</option></select></label>
-  <label>Palette <select id="palette"><option>peach</option><option>pink</option><option>grayblue</option><option>lavanda</option><option>graphite</option></select></label>
+  <label>Palette <select id="palette"><option>peach</option><option>pink</option><option>grayblue</option><option>lavanda</option><option>graphite</option><option>paper</option></select></label>
   <label>Typeface <select id="typeface"><option>default</option><option>device</option></select></label>
 </header>
 <main>
@@ -99,6 +104,63 @@
       <div class="row"><button class="paper-btn paper-btn--secondary" id="open-dialog">Open dialog</button></div>
       <dialog class="paper-dialog" id="dialog"><h2 class="paper-dialog__title">Restart device?</h2><p class="paper-dialog__body">Unsaved notes are kept. Restart takes about 20 seconds.</p>
         <form method="dialog" class="paper-btn-group"><button class="paper-btn paper-btn--secondary">Cancel</button><button class="paper-btn">Restart</button></form></dialog>
+    </div>
+  </div>
+  <h2 class="paper-text-sans-serif-header-2">Planner patterns</h2>
+  <p class="paper-text-sans-serif-body" style="color:var(--paper-fonts-secondary);max-width:640px">Hairline lists, mono overlines, round checks and one signal accent. The pattern is inspired by a Dribbble planner shot (see docs/research/reference-planner.md). Shown here with <code>data-palette="paper"</code>; switch the page theme to <b>eink</b> to see it on e-paper.</p>
+  <div class="phones" data-palette="paper">
+    <div class="phone">
+      <header class="paper-page-header" style="position:static;box-shadow:none;background:none;display:grid;padding:32px 24px 24px">
+        <p class="paper-overline">Wed 12 — Week 24</p>
+        <h3 class="paper-page-header__title">Today</h3>
+        <p class="paper-overline paper-page-header__meta">5 jobs · 2 done</p>
+      </header>
+      <section class="paper-section">
+        <p class="paper-overline">Morning</p>
+        <label class="paper-task paper-task--done"><input type="checkbox" class="paper-task__check" checked><span class="paper-task__title">Sync sensor logs</span><span class="paper-task__time">06:00</span></label>
+        <label class="paper-task paper-task--current"><input type="checkbox" class="paper-task__check"><span class="paper-task__title">Calibrate soil probe</span><span class="paper-task__time">09:30 <span class="paper-tag">Now</span></span></label>
+        <label class="paper-task"><input type="checkbox" class="paper-task__check"><span class="paper-task__title">Rotate camera keys</span><span class="paper-task__time">11:00</span></label>
+      </section>
+      <section class="paper-section">
+        <p class="paper-overline">Afternoon</p>
+        <label class="paper-task paper-task--done"><input type="checkbox" class="paper-task__check" checked><span class="paper-task__title">Firmware 2.4 rollout</span><span class="paper-task__time">14:00</span></label>
+        <label class="paper-task"><input type="checkbox" class="paper-task__check"><span class="paper-task__title">Battery health check</span><span class="paper-task__time">16:30</span></label>
+      </section>
+      <button class="paper-fab" aria-label="Add job"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+      <nav class="paper-tabbar" style="margin-top:24px"><a href="#" aria-current="page">Today</a><a href="#">Upcoming</a><a href="#">Devices</a></nav>
+    </div>
+    <div class="phone">
+      <header class="paper-page-header" style="position:static;box-shadow:none;background:none;display:grid;padding:32px 24px 24px">
+        <p class="paper-overline">Wed 12 — Week 24</p>
+        <h3 class="paper-page-header__title">Upcoming</h3>
+      </header>
+      <div class="paper-datestrip" style="border-bottom:1px solid var(--paper-borders-colors-hairline)">
+        <button class="paper-date" aria-pressed="true"><span class="paper-date__day">Wed</span><span class="paper-date__num">12</span><span class="paper-date__dots"><i></i><i></i></span></button>
+        <button class="paper-date" aria-pressed="false"><span class="paper-date__day">Thu</span><span class="paper-date__num">13</span><span class="paper-date__dots"><i></i><i></i><i></i></span></button>
+        <button class="paper-date" aria-pressed="false"><span class="paper-date__day">Fri</span><span class="paper-date__num">14</span><span class="paper-date__dots"><i></i></span></button>
+        <button class="paper-date" disabled><span class="paper-date__day">Sat</span><span class="paper-date__num">15</span><span class="paper-date__dots"></span></button>
+        <button class="paper-date" aria-pressed="false"><span class="paper-date__day">Sun</span><span class="paper-date__num">16</span><span class="paper-date__dots"><i></i><i></i></span></button>
+      </div>
+      <section class="paper-section">
+        <p class="paper-overline">Tomorrow — Thu 13</p>
+        <label class="paper-task"><input type="checkbox" class="paper-task__check"><span class="paper-task__title">Replace hub filter</span><span class="paper-task__time">09:00</span></label>
+        <label class="paper-task"><input type="checkbox" class="paper-task__check"><span class="paper-task__title">Export weekly report</span><span class="paper-task__time">11:30</span></label>
+        <label class="paper-task"><input type="checkbox" class="paper-task__check"><span class="paper-task__title">Review alert rules</span><span class="paper-task__time">15:00</span></label>
+      </section>
+      <nav class="paper-tabbar" style="margin-top:24px"><a href="#">Today</a><a href="#" aria-current="page">Upcoming</a><a href="#">Devices</a></nav>
+    </div>
+    <div class="phone">
+      <header class="paper-page-header" style="position:static;box-shadow:none;background:none;display:grid;padding:32px 24px 24px">
+        <p class="paper-overline">Wed 12 — Week 24</p>
+        <h3 class="paper-page-header__title">Devices</h3>
+      </header>
+      <div class="meters">
+        <div class="paper-meter"><span class="paper-meter__title">Greenhouse</span><span class="paper-overline">8 online · 1 off</span><progress class="paper-progress" value="88" max="100"></progress></div>
+        <div class="paper-meter"><span class="paper-meter__title">Front door</span><span class="paper-overline">3 online</span><progress class="paper-progress" value="100" max="100"></progress></div>
+        <div class="paper-meter"><span class="paper-meter__title">Workshop</span><span class="paper-overline">2 online · 3 off</span><progress class="paper-progress" value="40" max="100"></progress></div>
+        <div class="paper-meter paper-meter--muted"><span class="paper-meter__title">Garage</span><span class="paper-overline">Not paired</span><progress class="paper-progress" value="2" max="100"></progress></div>
+      </div>
+      <nav class="paper-tabbar" style="margin-top:24px"><a href="#">Today</a><a href="#">Upcoming</a><a href="#" aria-current="page">Devices</a></nav>
     </div>
   </div>
   <h2 class="paper-text-sans-serif-header-2">Paper device preview</h2>

@@ -52,6 +52,24 @@
 | `.paper-card`, `.paper-card--task` | container | `surfaces/main/*`, `components/card/*` |
 | `.paper-dialog` | `<dialog>` | `components/dialog/*` |
 
+## Planner patterns
+
+These are inspired by a paper-toned planner reference ([notes](research/reference-planner.md)). They look best with `data-palette="paper"`.
+
+| Class | Use | Tokens |
+|---|---|---|
+| `.paper-overline` | Mono uppercase label for dates, sections and counts | text style `Mono/Overline` |
+| `.paper-page-header` (+ `__title`, `__meta`) | Screen title block closed by a hairline | text style `Sans serif/Display`, `borders/colors/hairline` |
+| `.paper-section` | Labelled group of rows | |
+| `.paper-task` (+ `--done`, `--current`, `--muted`) | Checkable row with a mono time | `components/task/*`, `signal/positive`, `signal/accent-text` |
+| `.paper-tag` | Tiny filled label ("NOW") | `signal/accent`, `signal/on-accent` |
+| `.paper-tabbar` | Bottom navigation with an accent underline | `components/tabbar/*` |
+| `.paper-datestrip`, `.paper-date` | Day picker with dot counts | `components/date/*` |
+| `.paper-meter` (+ `--muted`) | Title, counts and a thin progress bar | `components/progress/fill-positive`, `progress/height-thin` |
+| `.paper-fab` | Floating primary action | `components/fab/*` |
+
+**Signal colours.** `signal/accent` (ember) marks *now*, *active* and the main action. Use it once or twice per screen. `signal/positive` (sage) marks *done* and *progress*. In `eink` both become black, so shape (fill, underline, bar) carries the meaning.
+
 See them live at `docs/index.html`. The "Paper device preview" section shows `eink` with the `device` typefaces.
 
 ## Adding a component token

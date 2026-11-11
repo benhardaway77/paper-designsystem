@@ -5,7 +5,8 @@
       "eink"
     ],
     "Colors": [
-      "graphite"
+      "graphite",
+      "paper"
     ]
   },
   "variables": {
@@ -155,9 +156,191 @@
         "v": {
           "Value": "#cccccc80"
         }
+      },
+      {
+        "n": "color/paper/200",
+        "t": "COLOR",
+        "v": {
+          "Value": "#f7f3eb"
+        }
+      },
+      {
+        "n": "color/paper/300",
+        "t": "COLOR",
+        "v": {
+          "Value": "#ece6d9"
+        }
+      },
+      {
+        "n": "color/paper/400",
+        "t": "COLOR",
+        "v": {
+          "Value": "#efe9dc"
+        }
+      },
+      {
+        "n": "color/paper/400-½",
+        "t": "COLOR",
+        "v": {
+          "Value": "#efe9dc80"
+        }
+      },
+      {
+        "n": "color/ember/500",
+        "t": "COLOR",
+        "v": {
+          "Value": "#f0652b"
+        }
+      },
+      {
+        "n": "color/ember/700",
+        "t": "COLOR",
+        "v": {
+          "Value": "#a33d14"
+        }
+      },
+      {
+        "n": "color/ember/300",
+        "t": "COLOR",
+        "v": {
+          "Value": "#f58a5c"
+        }
+      },
+      {
+        "n": "color/sage/500",
+        "t": "COLOR",
+        "v": {
+          "Value": "#7c8a6e"
+        }
+      },
+      {
+        "n": "color/sage/300",
+        "t": "COLOR",
+        "v": {
+          "Value": "#a3b195"
+        }
+      },
+      {
+        "n": "color/neutral/translucents/black-12",
+        "t": "COLOR",
+        "v": {
+          "Value": "#0000001f"
+        }
+      },
+      {
+        "n": "color/neutral/translucents/white-12",
+        "t": "COLOR",
+        "v": {
+          "Value": "#ffffff1f"
+        }
       }
     ],
     "Tokens": [
+      {
+        "n": "signal/accent",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "color/ember/500"
+          },
+          "dark": {
+            "alias": "color/ember/500"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "signal/on-accent",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "color/neutral/1000"
+          },
+          "dark": {
+            "alias": "color/neutral/1000"
+          },
+          "eink": {
+            "alias": "color/ink/0"
+          }
+        }
+      },
+      {
+        "n": "signal/accent-text",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "color/ember/700"
+          },
+          "dark": {
+            "alias": "color/ember/300"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "signal/positive",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "color/sage/500"
+          },
+          "dark": {
+            "alias": "color/sage/300"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "signal/on-positive",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "color/neutral/000"
+          },
+          "dark": {
+            "alias": "color/neutral/900"
+          },
+          "eink": {
+            "alias": "color/ink/0"
+          }
+        }
+      },
+      {
+        "n": "fonts/muted",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "color/neutral/500"
+          },
+          "dark": {
+            "alias": "color/neutral/500"
+          },
+          "eink": {
+            "alias": "color/ink/8"
+          }
+        }
+      },
+      {
+        "n": "borders/colors/hairline",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "color/neutral/translucents/black-12"
+          },
+          "dark": {
+            "alias": "color/neutral/translucents/white-12"
+          },
+          "eink": {
+            "alias": "color/ink/8"
+          }
+        }
+      },
       {
         "n": "components/button/primary-surface",
         "t": "COLOR",
@@ -1056,6 +1239,219 @@
         }
       },
       {
+        "n": "components/tabbar/text",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "fonts/muted"
+          },
+          "dark": {
+            "alias": "fonts/muted"
+          },
+          "eink": {
+            "alias": "color/ink/9"
+          }
+        }
+      },
+      {
+        "n": "components/tabbar/text-active",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "fonts/accent"
+          },
+          "dark": {
+            "alias": "fonts/accent"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "components/tabbar/indicator",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "signal/accent"
+          },
+          "dark": {
+            "alias": "signal/accent"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "components/tabbar/indicator-height",
+        "t": "FLOAT",
+        "v": {
+          "light": 3,
+          "dark": 3,
+          "eink": 4
+        }
+      },
+      {
+        "n": "components/tabbar/height",
+        "t": "FLOAT",
+        "v": {
+          "light": 56,
+          "dark": 56,
+          "eink": 56
+        }
+      },
+      {
+        "n": "components/task/check-border",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "fonts/muted"
+          },
+          "dark": {
+            "alias": "fonts/muted"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "components/task/check-size",
+        "t": "FLOAT",
+        "v": {
+          "light": 28,
+          "dark": 28,
+          "eink": 28
+        }
+      },
+      {
+        "n": "components/task/current-bar",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "signal/accent"
+          },
+          "dark": {
+            "alias": "signal/accent"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "components/task/current-bar-width",
+        "t": "FLOAT",
+        "v": {
+          "light": 3,
+          "dark": 3,
+          "eink": 6
+        }
+      },
+      {
+        "n": "components/date/ring",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "borders/colors/hairline"
+          },
+          "dark": {
+            "alias": "borders/colors/hairline"
+          },
+          "eink": {
+            "alias": "color/ink/6"
+          }
+        }
+      },
+      {
+        "n": "components/date/ring-selected",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "signal/accent"
+          },
+          "dark": {
+            "alias": "signal/accent"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "components/date/size",
+        "t": "FLOAT",
+        "v": {
+          "light": 52,
+          "dark": 52,
+          "eink": 52
+        }
+      },
+      {
+        "n": "components/fab/surface",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "signal/accent"
+          },
+          "dark": {
+            "alias": "signal/accent"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "components/fab/icon",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "color/neutral/000"
+          },
+          "dark": {
+            "alias": "color/neutral/000"
+          },
+          "eink": {
+            "alias": "color/ink/0"
+          }
+        }
+      },
+      {
+        "n": "components/fab/size",
+        "t": "FLOAT",
+        "v": {
+          "light": 72,
+          "dark": 72,
+          "eink": 72
+        }
+      },
+      {
+        "n": "components/progress/fill-positive",
+        "t": "COLOR",
+        "v": {
+          "light": {
+            "alias": "signal/positive"
+          },
+          "dark": {
+            "alias": "signal/positive"
+          },
+          "eink": {
+            "alias": "color/ink/15"
+          }
+        }
+      },
+      {
+        "n": "components/progress/height-thin",
+        "t": "FLOAT",
+        "v": {
+          "light": 4,
+          "dark": 4,
+          "eink": 6
+        }
+      },
+      {
         "n": "motion/duration-fast",
         "t": "FLOAT",
         "v": {
@@ -1089,6 +1485,20 @@
         },
         "translucent": {
           "alias": "color/graphite/400-½"
+        }
+      },
+      "paper": {
+        "primary": {
+          "alias": "color/paper/200"
+        },
+        "accent": {
+          "alias": "color/paper/300"
+        },
+        "vibrant": {
+          "alias": "color/paper/400"
+        },
+        "translucent": {
+          "alias": "color/paper/400-½"
         }
       }
     },
@@ -1355,5 +1765,43 @@
       }
     },
     "$description": "'default' is the Papper Figma set (SF Pro / New York are licensed for Apple platforms only; Hacky is commercial). 'device' is an all-OFL set you can bundle in firmware: Inter (UI), Literata (reading, designed for Google Play Books), IBM Plex Mono. Select with data-typeface=\"device\"."
+  },
+  "styles": {
+    "text": [
+      {
+        "n": "Sans serif/Display",
+        "family": "SF Pro",
+        "style": "Semibold",
+        "size": 44,
+        "weight": 590,
+        "letterSpacing": -0.02,
+        "lineHeight": 1.1
+      },
+      {
+        "n": "Sans serif/List title",
+        "family": "SF Pro",
+        "style": "Medium",
+        "size": 18,
+        "weight": 500,
+        "lineHeight": 1.3
+      },
+      {
+        "n": "Mono/Overline",
+        "family": "IBM Plex Mono",
+        "style": "Medium",
+        "size": 12,
+        "weight": 500,
+        "letterSpacing": 0.14,
+        "textTransform": "uppercase"
+      },
+      {
+        "n": "Mono/Meta",
+        "family": "IBM Plex Mono",
+        "style": "Regular",
+        "size": 13,
+        "weight": 400,
+        "letterSpacing": 0.04
+      }
+    ]
   }
 }

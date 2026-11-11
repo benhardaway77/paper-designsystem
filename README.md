@@ -23,13 +23,17 @@ On top of the Figma export, `tokens/extensions.json` adds local tokens. It is me
 |---|---|
 | **`eink` theme**: a third Tokens mode for e-paper. Uses only opaque grays on the 16-level E Ink grid, with no shadows, translucency or motion | `data-theme="eink"`, applied automatically under `@media (update: slow), (monochrome)` when no theme is set |
 | **`graphite` palette**: neutral gray accents that follow light and dark mode | `data-palette="graphite"` |
+| **`paper` palette**: warm paper surfaces (`#f7f3eb`), plus `signal/accent` (ember) and `signal/positive` (sage) | `data-palette="paper"`, `--paper-signal-*` |
 | `color/ink/0…15` primitives (paper white to full ink) and `color/graphite/*` | `--paper-color-ink-*`, `--paper-color-graphite-*` |
-| 71 component tokens: button/CTA, input, switch, segmented control, list, badge, status, progress, dialog, motion | `--paper-components-*`, `--paper-motion-*` |
+| 95 component and semantic tokens: button/CTA, input, switch, segmented control, list, badge, status, progress, dialog, tab bar, task row, date strip, add button, motion | `--paper-components-*`, `--paper-signal-*`, `--paper-motion-*` |
+| 4 extra text styles: `Sans serif/Display`, `Sans serif/List title`, `Mono/Overline`, `Mono/Meta` | `.paper-text-*` |
 | Font roles and a bundleable `device` typeface set (Inter, Literata, IBM Plex Mono, all OFL) | `--paper-font-sans/serif/display/mono`, `data-typeface="device"` |
 
 `dist/components.css` turns those tokens into ready-made classes (`.paper-btn`, `.paper-input`, `.paper-switch` and more). See [docs/components.md](docs/components.md). For the typeface research behind the `device` set, see [docs/research/paper-device-fonts.md](docs/research/paper-device-fonts.md).
 
 ![Components in the eink theme](docs/components-eink.png)
+
+![Planner patterns in the paper palette](docs/planner-paper.png)
 
 The system has **independent axes**: theme (`light`/`dark`/`eink`), accent
 palette, and typeface (`default`/`device`). Semantic tokens alias the palette, which aliases primitives, so
@@ -70,7 +74,7 @@ resolveTokens('dark', 'lavanda')['fonts/main']; // '#f5d6e6'
 tokens.light.peach['components/card/main-card-radius']; // 35
 ```
 
-`dist/tokens.json` contains the same data (all 15 theme × palette combinations,
+`dist/tokens.json` contains the same data (all 18 theme × palette combinations,
 fully resolved).
 
 ### Fonts
