@@ -1,0 +1,14 @@
+{
+  "name": "@benhardaway77/paper-designsystem",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Papper design tokens (colors, typography, effects) exported from Figma variables",
+  "type": "module",
+  "main": "dist/tokens.js",
+  "types": "dist/tokens.d.ts",
+  "files": ["dist", "figma"],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test"
+  }
+}

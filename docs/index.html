@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-palette="peach">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Papper Tokens</title>
+<link rel="stylesheet" href="../dist/tokens.css">
+<style>
+  body { margin: 0; background: var(--paper-surfaces-main-background-gray); color: var(--paper-fonts-main);
+         font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+  header { position: sticky; top: 0; display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+           padding: 16px; background: var(--paper-surfaces-main-first-layer); box-shadow: var(--paper-shadow-slight-shadow); }
+  header h1 { margin: 0 auto 0 0; }
+  label { font-size: 13px; color: var(--paper-fonts-secondary); }
+  select { font: inherit; margin-left: 6px; }
+  main { padding: 16px; max-width: 1100px; margin: 0 auto; }
+  h2 { margin: 32px 0 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .swatch { border-radius: var(--paper-components-card-discovery-card-radius); overflow: hidden;
+            background: var(--paper-surfaces-main-background-plain); border: 1px solid var(--paper-borders-colors-gentle); }
+  .chip { height: 56px; }
+  .meta { padding: 8px; font: 500 11px/1.3 "IBM Plex Mono", ui-monospace, monospace; word-break: break-all; }
+  .meta b { display: block; font-weight: 600; color: var(--paper-fonts-main); }
+  .meta span { color: var(--paper-fonts-secondary); }
+  .card { color: var(--paper-fonts-main); padding: 20px; border-radius: var(--paper-components-card-main-card-radius); background: var(--paper-surfaces-main-first-layer); }
+  .card .inner { margin-top: 12px; padding: 14px; border-radius: var(--paper-components-card-task-card-radius); background: var(--paper-surfaces-main-second-layer); }
+  .btn { display: inline-block; margin-top: 12px; padding: 10px 16px; border-radius: 12px; background: var(--paper-surfaces-buttons-primary); color: var(--paper-fonts-buttons); }
+  .gradients { display: flex; gap: 10px; flex-wrap: wrap; }
+  .gradients div { width: 160px; height: 100px; border-radius: 16px; }
+  .nested { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1 class="paper-text-serif-header">Papper tokens</h1>
+  <label>Theme <select id="theme"><option>light</option><option>dark</option></select></label>
+  <label>Palette <select id="palette"><option>peach</option><option>pink</option><option>grayblue</option><option>lavanda</option></select></label>
+</header>
+<main>
+  <h2 class="paper-text-sans-serif-header-2">Surfaces in context</h2>
+  <div class="nested">
+    <div class="card" id="demo-root">
+      <div class="paper-text-serif-discovery-title">Today</div>
+      <div class="inner"><div class="paper-text-sans-serif-body-title">Task card</div>
+        <div class="paper-text-serif-description" style="color:var(--paper-fonts-secondary)">Second layer surface with secondary text</div></div>
+      <span class="btn paper-text-sans-serif-body">Primary button</span>
+    </div>
+    <div class="card" data-palette="lavanda" id="demo-palette-only">
+      <div class="paper-text-serif-discovery-title">Palette-only subtree</div>
+      <div class="inner">data-palette="lavanda" without data-theme: follows the page theme, swaps the palette.</div>
+    </div>
+    <div class="card" data-theme="dark" data-palette="grayblue" id="demo-both">
+      <div class="paper-text-serif-discovery-title">Forced dark · grayblue</div>
+      <div class="inner">Both attributes on one element.</div>
+    </div>
+  </div>
+  <h2 class="paper-text-sans-serif-header-2">Gradients</h2>
+  <div class="gradients"><div style="background:var(--paper-gradient-light)"></div><div style="background:var(--paper-gradient-dark)"></div></div>
+  <h2 class="paper-text-sans-serif-header-2">Semantic tokens</h2>
+  <div class="grid" id="semantic"></div>
+  <h2 class="paper-text-sans-serif-header-2">Primitives</h2>
+  <div class="grid" id="primitives"></div>
+</main>
+<script type="module">
+  import { tokens, primitives } from '../dist/tokens.js';
+  const html = document.documentElement;
+  const slug = n => '--paper-' + n.toLowerCase().replace(/½/g, 'half').replace(/[()]/g, '-').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  const swatch = (name, value) => `<div class="swatch"><div class="chip" style="background:var(${slug(name)})"></div><div class="meta"><b>${name}</b><span>${value}</span></div></div>`;
+  const render = () => {
+    const set = tokens[html.dataset.theme][html.dataset.palette];
+    const semantic = Object.entries(set).filter(([n, v]) => typeof v === 'string' && !n.startsWith('pairs-tokens/') && !n.startsWith('color/'));
+    document.getElementById('semantic').innerHTML = semantic.map(([n, v]) => swatch(n, v)).join('');
+  };
+  document.getElementById('primitives').innerHTML = Object.entries(primitives).map(([n, v]) => swatch(n, v)).join('');
+  for (const id of ['theme', 'palette']) {
+    const el = document.getElementById(id);
+    el.addEventListener('change', () => { html.dataset[id] = el.value; render(); });
+  }
+  render();
+</script>
+</body>
+</html>
