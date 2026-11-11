@@ -65,6 +65,26 @@
   --paper-color-neutral-translucents-neutral600-half: #4f4f4fb2;
   --paper-color-neutral-translucents-white-40: #ffffff66;
   --paper-color-neutral-translucents-white-60: #ffffff99;
+  --paper-color-ink-0: #ffffff;
+  --paper-color-ink-1: #eeeeee;
+  --paper-color-ink-2: #dddddd;
+  --paper-color-ink-3: #cccccc;
+  --paper-color-ink-4: #bbbbbb;
+  --paper-color-ink-5: #aaaaaa;
+  --paper-color-ink-6: #999999;
+  --paper-color-ink-7: #888888;
+  --paper-color-ink-8: #777777;
+  --paper-color-ink-9: #666666;
+  --paper-color-ink-10: #555555;
+  --paper-color-ink-11: #444444;
+  --paper-color-ink-12: #333333;
+  --paper-color-ink-13: #222222;
+  --paper-color-ink-14: #111111;
+  --paper-color-ink-15: #000000;
+  --paper-color-graphite-200: var(--paper-color-ink-1);
+  --paper-color-graphite-300: var(--paper-color-ink-2);
+  --paper-color-graphite-400: var(--paper-color-ink-3);
+  --paper-color-graphite-400-half: #cccccc80;
 }
 
 /* Palette: peach */
@@ -98,6 +118,14 @@
   --paper-accent: var(--paper-color-lavanda-300);
   --paper-vibrant: var(--paper-color-lavanda-400);
   --paper-translucent: var(--paper-color-lavanda-400-half);
+}
+
+/* Palette: graphite */
+[data-palette="graphite"] {
+  --paper-primary: var(--paper-color-graphite-200);
+  --paper-accent: var(--paper-color-graphite-300);
+  --paper-vibrant: var(--paper-color-graphite-400);
+  --paper-translucent: var(--paper-color-graphite-400-half);
 }
 
 /* Semantic tokens: light (default) */
@@ -178,6 +206,77 @@
   --paper-components-logo-accent: var(--paper-color-coral-700);
   --paper-components-logo-surface: var(--paper-color-green-50);
   --paper-components-fullview-handle: var(--paper-pairs-tokens-white60-color400half);
+  --paper-components-button-primary-surface: var(--paper-color-neutral-700);
+  --paper-components-button-primary-text: var(--paper-color-neutral-000);
+  --paper-components-button-primary-surface-pressed: var(--paper-color-neutral-900);
+  --paper-components-button-secondary-surface: var(--paper-primary);
+  --paper-components-button-secondary-text: var(--paper-color-neutral-700);
+  --paper-components-button-secondary-border: var(--paper-borders-colors-gentle);
+  --paper-components-button-secondary-surface-pressed: var(--paper-accent);
+  --paper-components-button-tertiary-text: var(--paper-fonts-main);
+  --paper-components-button-tertiary-surface-pressed: var(--paper-color-neutral-translucents-neutral700-half);
+  --paper-components-button-destructive-surface: var(--paper-color-coral-700);
+  --paper-components-button-destructive-text: var(--paper-color-neutral-1000);
+  --paper-components-button-destructive-border: var(--paper-color-coral-700);
+  --paper-components-button-disabled-surface: var(--paper-color-neutral-300);
+  --paper-components-button-disabled-text: var(--paper-color-neutral-500);
+  --paper-components-button-focus-ring: var(--paper-color-neutral-1000);
+  --paper-components-button-radius: 14px;
+  --paper-components-button-radius-pill: 999px;
+  --paper-components-button-height-sm: 36px;
+  --paper-components-button-height-md: 48px;
+  --paper-components-button-height-lg: 56px;
+  --paper-components-button-padding-x-sm: 14px;
+  --paper-components-button-padding-x-md: 20px;
+  --paper-components-button-padding-x-lg: 24px;
+  --paper-components-button-gap: 8px;
+  --paper-components-button-border-width: 1px;
+  --paper-components-button-focus-ring-width: 3px;
+  --paper-components-button-min-touch-target: 48px;
+  --paper-components-input-surface: var(--paper-color-neutral-000);
+  --paper-components-input-text: var(--paper-fonts-main);
+  --paper-components-input-placeholder: var(--paper-fonts-textholder);
+  --paper-components-input-border: var(--paper-color-neutral-500);
+  --paper-components-input-border-focus: var(--paper-borders-colors-active);
+  --paper-components-input-error: var(--paper-color-coral-700);
+  --paper-components-input-height: 48px;
+  --paper-components-input-radius: 12px;
+  --paper-components-input-border-width: 1px;
+  --paper-components-input-border-width-focus: 2px;
+  --paper-components-switch-track-on: var(--paper-color-neutral-700);
+  --paper-components-switch-track-off: var(--paper-color-neutral-400);
+  --paper-components-switch-thumb-on: var(--paper-color-neutral-000);
+  --paper-components-switch-thumb-off: var(--paper-color-neutral-000);
+  --paper-components-switch-border: #00000000;
+  --paper-components-switch-width: 52px;
+  --paper-components-switch-height: 32px;
+  --paper-components-segmented-surface: var(--paper-surfaces-buttons-quick-action);
+  --paper-components-segmented-text: var(--paper-fonts-main);
+  --paper-components-segmented-selected-surface: var(--paper-components-button-primary-surface);
+  --paper-components-segmented-selected-text: var(--paper-components-button-primary-text);
+  --paper-components-segmented-border: #00000000;
+  --paper-components-list-divider: var(--paper-borders-colors-gentle);
+  --paper-components-list-row-pressed: var(--paper-components-button-tertiary-surface-pressed);
+  --paper-components-list-row-height: 56px;
+  --paper-components-badge-surface: var(--paper-surfaces-main-accent);
+  --paper-components-badge-text: var(--paper-fonts-main);
+  --paper-components-status-positive-surface: var(--paper-color-green-300);
+  --paper-components-status-positive-text: var(--paper-color-neutral-900);
+  --paper-components-status-warning-surface: var(--paper-color-yellow-300);
+  --paper-components-status-warning-text: var(--paper-color-neutral-900);
+  --paper-components-status-critical-surface: var(--paper-color-pink-300);
+  --paper-components-status-critical-text: var(--paper-color-neutral-900);
+  --paper-components-status-info-surface: var(--paper-color-blue-300);
+  --paper-components-status-info-text: var(--paper-color-neutral-900);
+  --paper-components-progress-track: var(--paper-color-neutral-300);
+  --paper-components-progress-fill: var(--paper-color-neutral-700);
+  --paper-components-progress-height: 8px;
+  --paper-components-dialog-surface: var(--paper-surfaces-main-background-modal);
+  --paper-components-dialog-scrim: var(--paper-color-neutral-translucents-black-40);
+  --paper-components-dialog-border: #00000000;
+  --paper-components-dialog-radius: 24px;
+  --paper-motion-duration-fast: 120ms;
+  --paper-motion-duration-base: 200ms;
 }
 
 /* Semantic tokens: dark (only values that differ from light) */
@@ -216,6 +315,294 @@
   --paper-borders-shadow-or-border-border-thick: 0px;
   --paper-icon-secondary: var(--paper-pairs-tokens-neutral700-color400half);
   --paper-components-logo-surface: #00000000;
+  --paper-components-button-primary-surface: var(--paper-vibrant);
+  --paper-components-button-primary-text: var(--paper-color-neutral-900);
+  --paper-components-button-primary-surface-pressed: var(--paper-accent);
+  --paper-components-button-secondary-surface: var(--paper-color-neutral-700);
+  --paper-components-button-secondary-text: var(--paper-vibrant);
+  --paper-components-button-secondary-border: var(--paper-translucent);
+  --paper-components-button-secondary-surface-pressed: var(--paper-color-neutral-600);
+  --paper-components-button-tertiary-surface-pressed: var(--paper-translucent);
+  --paper-components-button-disabled-surface: var(--paper-color-neutral-800);
+  --paper-components-button-focus-ring: var(--paper-vibrant);
+  --paper-components-input-surface: var(--paper-color-neutral-800);
+  --paper-components-input-placeholder: var(--paper-color-neutral-500);
+  --paper-components-switch-track-on: var(--paper-vibrant);
+  --paper-components-switch-track-off: var(--paper-color-neutral-600);
+  --paper-components-switch-thumb-on: var(--paper-color-neutral-900);
+  --paper-components-switch-thumb-off: var(--paper-color-neutral-400);
+  --paper-components-status-positive-surface: var(--paper-color-neutral-800);
+  --paper-components-status-positive-text: var(--paper-color-green-400);
+  --paper-components-status-warning-surface: var(--paper-color-neutral-800);
+  --paper-components-status-warning-text: var(--paper-color-yellow-400);
+  --paper-components-status-critical-surface: var(--paper-color-neutral-800);
+  --paper-components-status-critical-text: var(--paper-color-pink-400);
+  --paper-components-status-info-surface: var(--paper-color-neutral-800);
+  --paper-components-status-info-text: var(--paper-color-blue-400);
+  --paper-components-progress-track: var(--paper-color-neutral-700);
+  --paper-components-progress-fill: var(--paper-vibrant);
+  --paper-components-dialog-border: var(--paper-color-neutral-800);
+}
+
+/* Semantic tokens: eink (only values that differ from light) */
+[data-theme="eink"],
+[data-theme="eink"] [data-palette]:not([data-theme]) {
+  --paper-pairs-tokens-color200-neutral900: var(--paper-color-ink-1);
+  --paper-pairs-tokens-color200-neutral800: var(--paper-color-ink-1);
+  --paper-pairs-tokens-color200-neutral700: var(--paper-color-ink-1);
+  --paper-fonts-accent: var(--paper-color-ink-15);
+  --paper-fonts-main: var(--paper-color-ink-15);
+  --paper-fonts-fancy: var(--paper-color-ink-13);
+  --paper-fonts-secondary: var(--paper-color-ink-11);
+  --paper-fonts-textholder: var(--paper-color-ink-9);
+  --paper-fonts-non-color: var(--paper-color-ink-15);
+  --paper-fonts-paywall: var(--paper-color-ink-15);
+  --paper-fonts-paywall-samecolor: var(--paper-color-ink-15);
+  --paper-fonts-tabs: var(--paper-color-ink-0);
+  --paper-fonts-buttons: var(--paper-color-ink-0);
+  --paper-pairs-tokens-color300-neutral700: var(--paper-color-ink-2);
+  --paper-pairs-tokens-green50-neutral700: var(--paper-color-ink-1);
+  --paper-pairs-tokens-neutral000-neutral700: var(--paper-color-ink-0);
+  --paper-pairs-tokens-neutral000-neutral900: var(--paper-color-ink-0);
+  --paper-pairs-tokens-neutral000-neutral999: var(--paper-color-ink-0);
+  --paper-pairs-tokens-white-black: var(--paper-color-ink-0);
+  --paper-pairs-tokens-black-white: var(--paper-color-ink-15);
+  --paper-pairs-tokens-neutral100-neutral900: var(--paper-color-ink-1);
+  --paper-pairs-tokens-neutral100-neutral700: var(--paper-color-ink-1);
+  --paper-pairs-tokens-neutral700half-neutral700: var(--paper-color-ink-8);
+  --paper-pairs-tokens-white60-neutral800: var(--paper-color-ink-0);
+  --paper-pairs-tokens-white60-neutral700: var(--paper-color-ink-0);
+  --paper-pairs-tokens-white60-color400half: var(--paper-color-ink-3);
+  --paper-pairs-tokens-neutral1000-color400: var(--paper-color-ink-15);
+  --paper-pairs-tokens-neutral700-color400: var(--paper-color-ink-15);
+  --paper-pairs-tokens-neutral550b-color400: var(--paper-color-ink-13);
+  --paper-pairs-tokens-neutral700-80-color400: var(--paper-color-ink-12);
+  --paper-pairs-tokens-neutral700-color400half: var(--paper-color-ink-12);
+  --paper-pairs-tokens-neutral700half-color400half: var(--paper-color-ink-6);
+  --paper-pairs-tokens-neutral700-neutral200b: var(--paper-color-ink-15);
+  --paper-pairs-tokens-neutral900-neutral400: var(--paper-color-ink-15);
+  --paper-pairs-tokens-neutral200b-neutral1000: var(--paper-color-ink-1);
+  --paper-pairs-tokens-neutral100-neutral1000: var(--paper-color-ink-1);
+  --paper-surfaces-main-first-layer: var(--paper-color-ink-0);
+  --paper-surfaces-buttons-primary: var(--paper-color-ink-15);
+  --paper-surfaces-buttons-quick-action: var(--paper-color-ink-0);
+  --paper-surfaces-buttons-tabs-tabs-second-surface: var(--paper-color-ink-12);
+  --paper-surfaces-buttons-paywall-button: var(--paper-color-ink-15);
+  --paper-surfaces-buttons-tabs-tabs-surface: var(--paper-color-ink-0);
+  --paper-surfaces-main-second-layer: var(--paper-color-ink-1);
+  --paper-surfaces-main-accent: var(--paper-color-ink-2);
+  --paper-surfaces-main-background-plain: var(--paper-color-ink-0);
+  --paper-surfaces-main-background-gray: var(--paper-color-ink-0);
+  --paper-surfaces-main-background-modal: var(--paper-color-ink-0);
+  --paper-surfaces-main-background-logo: var(--paper-color-ink-1);
+  --paper-surfaces-main-discovery-gray: var(--paper-color-ink-1);
+  --paper-surfaces-main-discovery-first-layer: var(--paper-color-ink-0);
+  --paper-surfaces-main-discovery-second-layer: var(--paper-color-ink-1);
+  --paper-surfaces-main-paywall-gray: var(--paper-color-ink-1);
+  --paper-borders-colors-active: var(--paper-color-ink-15);
+  --paper-borders-colors-inactive: var(--paper-color-ink-5);
+  --paper-borders-colors-discovery: var(--paper-color-ink-15);
+  --paper-borders-colors-gentle: var(--paper-color-ink-6);
+  --paper-borders-colors-samecolor: var(--paper-color-ink-15);
+  --paper-components-checkbox-checkbox: var(--paper-color-ink-15);
+  --paper-icon-primary: var(--paper-color-ink-15);
+  --paper-icon-secondary: var(--paper-color-ink-9);
+  --paper-components-logo-outline: var(--paper-color-ink-15);
+  --paper-components-logo-accent: var(--paper-color-ink-10);
+  --paper-components-logo-surface: var(--paper-color-ink-0);
+  --paper-components-fullview-handle: var(--paper-color-ink-6);
+  --paper-components-button-primary-surface: var(--paper-color-ink-15);
+  --paper-components-button-primary-text: var(--paper-color-ink-0);
+  --paper-components-button-primary-surface-pressed: var(--paper-color-ink-12);
+  --paper-components-button-secondary-surface: var(--paper-color-ink-0);
+  --paper-components-button-secondary-text: var(--paper-color-ink-15);
+  --paper-components-button-secondary-border: var(--paper-color-ink-15);
+  --paper-components-button-secondary-surface-pressed: var(--paper-color-ink-2);
+  --paper-components-button-tertiary-text: var(--paper-color-ink-15);
+  --paper-components-button-tertiary-surface-pressed: var(--paper-color-ink-2);
+  --paper-components-button-destructive-surface: var(--paper-color-ink-0);
+  --paper-components-button-destructive-text: var(--paper-color-ink-15);
+  --paper-components-button-destructive-border: var(--paper-color-ink-15);
+  --paper-components-button-disabled-surface: var(--paper-color-ink-1);
+  --paper-components-button-disabled-text: var(--paper-color-ink-6);
+  --paper-components-button-focus-ring: var(--paper-color-ink-15);
+  --paper-components-button-border-width: 2px;
+  --paper-components-input-surface: var(--paper-color-ink-0);
+  --paper-components-input-text: var(--paper-color-ink-15);
+  --paper-components-input-placeholder: var(--paper-color-ink-9);
+  --paper-components-input-border: var(--paper-color-ink-15);
+  --paper-components-input-border-focus: var(--paper-color-ink-15);
+  --paper-components-input-error: var(--paper-color-ink-15);
+  --paper-components-input-border-width: 2px;
+  --paper-components-input-border-width-focus: 3px;
+  --paper-components-switch-track-on: var(--paper-color-ink-15);
+  --paper-components-switch-track-off: var(--paper-color-ink-0);
+  --paper-components-switch-thumb-on: var(--paper-color-ink-0);
+  --paper-components-switch-thumb-off: var(--paper-color-ink-15);
+  --paper-components-switch-border: var(--paper-color-ink-15);
+  --paper-components-segmented-surface: var(--paper-color-ink-0);
+  --paper-components-segmented-text: var(--paper-color-ink-15);
+  --paper-components-segmented-selected-surface: var(--paper-color-ink-15);
+  --paper-components-segmented-selected-text: var(--paper-color-ink-0);
+  --paper-components-segmented-border: var(--paper-color-ink-15);
+  --paper-components-list-divider: var(--paper-color-ink-8);
+  --paper-components-list-row-pressed: var(--paper-color-ink-2);
+  --paper-components-badge-surface: var(--paper-color-ink-15);
+  --paper-components-badge-text: var(--paper-color-ink-0);
+  --paper-components-status-positive-surface: var(--paper-color-ink-0);
+  --paper-components-status-positive-text: var(--paper-color-ink-15);
+  --paper-components-status-warning-surface: var(--paper-color-ink-0);
+  --paper-components-status-warning-text: var(--paper-color-ink-15);
+  --paper-components-status-critical-surface: var(--paper-color-ink-0);
+  --paper-components-status-critical-text: var(--paper-color-ink-15);
+  --paper-components-status-info-surface: var(--paper-color-ink-0);
+  --paper-components-status-info-text: var(--paper-color-ink-15);
+  --paper-components-progress-track: var(--paper-color-ink-1);
+  --paper-components-progress-fill: var(--paper-color-ink-15);
+  --paper-components-dialog-surface: var(--paper-color-ink-0);
+  --paper-components-dialog-scrim: #00000000;
+  --paper-components-dialog-border: var(--paper-color-ink-15);
+  --paper-motion-duration-fast: 0ms;
+  --paper-motion-duration-base: 0ms;
+}
+
+/* E-paper screens (slow refresh or monochrome) get the eink theme automatically
+   unless the page picks a theme explicitly. */
+@media (update: slow), (monochrome) {
+  :root:not([data-theme]),
+  :root:not([data-theme]) [data-palette]:not([data-theme]) {
+    --paper-pairs-tokens-color200-neutral900: var(--paper-color-ink-1);
+    --paper-pairs-tokens-color200-neutral800: var(--paper-color-ink-1);
+    --paper-pairs-tokens-color200-neutral700: var(--paper-color-ink-1);
+    --paper-fonts-accent: var(--paper-color-ink-15);
+    --paper-fonts-main: var(--paper-color-ink-15);
+    --paper-fonts-fancy: var(--paper-color-ink-13);
+    --paper-fonts-secondary: var(--paper-color-ink-11);
+    --paper-fonts-textholder: var(--paper-color-ink-9);
+    --paper-fonts-non-color: var(--paper-color-ink-15);
+    --paper-fonts-paywall: var(--paper-color-ink-15);
+    --paper-fonts-paywall-samecolor: var(--paper-color-ink-15);
+    --paper-fonts-tabs: var(--paper-color-ink-0);
+    --paper-fonts-buttons: var(--paper-color-ink-0);
+    --paper-pairs-tokens-color300-neutral700: var(--paper-color-ink-2);
+    --paper-pairs-tokens-green50-neutral700: var(--paper-color-ink-1);
+    --paper-pairs-tokens-neutral000-neutral700: var(--paper-color-ink-0);
+    --paper-pairs-tokens-neutral000-neutral900: var(--paper-color-ink-0);
+    --paper-pairs-tokens-neutral000-neutral999: var(--paper-color-ink-0);
+    --paper-pairs-tokens-white-black: var(--paper-color-ink-0);
+    --paper-pairs-tokens-black-white: var(--paper-color-ink-15);
+    --paper-pairs-tokens-neutral100-neutral900: var(--paper-color-ink-1);
+    --paper-pairs-tokens-neutral100-neutral700: var(--paper-color-ink-1);
+    --paper-pairs-tokens-neutral700half-neutral700: var(--paper-color-ink-8);
+    --paper-pairs-tokens-white60-neutral800: var(--paper-color-ink-0);
+    --paper-pairs-tokens-white60-neutral700: var(--paper-color-ink-0);
+    --paper-pairs-tokens-white60-color400half: var(--paper-color-ink-3);
+    --paper-pairs-tokens-neutral1000-color400: var(--paper-color-ink-15);
+    --paper-pairs-tokens-neutral700-color400: var(--paper-color-ink-15);
+    --paper-pairs-tokens-neutral550b-color400: var(--paper-color-ink-13);
+    --paper-pairs-tokens-neutral700-80-color400: var(--paper-color-ink-12);
+    --paper-pairs-tokens-neutral700-color400half: var(--paper-color-ink-12);
+    --paper-pairs-tokens-neutral700half-color400half: var(--paper-color-ink-6);
+    --paper-pairs-tokens-neutral700-neutral200b: var(--paper-color-ink-15);
+    --paper-pairs-tokens-neutral900-neutral400: var(--paper-color-ink-15);
+    --paper-pairs-tokens-neutral200b-neutral1000: var(--paper-color-ink-1);
+    --paper-pairs-tokens-neutral100-neutral1000: var(--paper-color-ink-1);
+    --paper-surfaces-main-first-layer: var(--paper-color-ink-0);
+    --paper-surfaces-buttons-primary: var(--paper-color-ink-15);
+    --paper-surfaces-buttons-quick-action: var(--paper-color-ink-0);
+    --paper-surfaces-buttons-tabs-tabs-second-surface: var(--paper-color-ink-12);
+    --paper-surfaces-buttons-paywall-button: var(--paper-color-ink-15);
+    --paper-surfaces-buttons-tabs-tabs-surface: var(--paper-color-ink-0);
+    --paper-surfaces-main-second-layer: var(--paper-color-ink-1);
+    --paper-surfaces-main-accent: var(--paper-color-ink-2);
+    --paper-surfaces-main-background-plain: var(--paper-color-ink-0);
+    --paper-surfaces-main-background-gray: var(--paper-color-ink-0);
+    --paper-surfaces-main-background-modal: var(--paper-color-ink-0);
+    --paper-surfaces-main-background-logo: var(--paper-color-ink-1);
+    --paper-surfaces-main-discovery-gray: var(--paper-color-ink-1);
+    --paper-surfaces-main-discovery-first-layer: var(--paper-color-ink-0);
+    --paper-surfaces-main-discovery-second-layer: var(--paper-color-ink-1);
+    --paper-surfaces-main-paywall-gray: var(--paper-color-ink-1);
+    --paper-borders-colors-active: var(--paper-color-ink-15);
+    --paper-borders-colors-inactive: var(--paper-color-ink-5);
+    --paper-borders-colors-discovery: var(--paper-color-ink-15);
+    --paper-borders-colors-gentle: var(--paper-color-ink-6);
+    --paper-borders-colors-samecolor: var(--paper-color-ink-15);
+    --paper-components-checkbox-checkbox: var(--paper-color-ink-15);
+    --paper-icon-primary: var(--paper-color-ink-15);
+    --paper-icon-secondary: var(--paper-color-ink-9);
+    --paper-components-logo-outline: var(--paper-color-ink-15);
+    --paper-components-logo-accent: var(--paper-color-ink-10);
+    --paper-components-logo-surface: var(--paper-color-ink-0);
+    --paper-components-fullview-handle: var(--paper-color-ink-6);
+    --paper-components-button-primary-surface: var(--paper-color-ink-15);
+    --paper-components-button-primary-text: var(--paper-color-ink-0);
+    --paper-components-button-primary-surface-pressed: var(--paper-color-ink-12);
+    --paper-components-button-secondary-surface: var(--paper-color-ink-0);
+    --paper-components-button-secondary-text: var(--paper-color-ink-15);
+    --paper-components-button-secondary-border: var(--paper-color-ink-15);
+    --paper-components-button-secondary-surface-pressed: var(--paper-color-ink-2);
+    --paper-components-button-tertiary-text: var(--paper-color-ink-15);
+    --paper-components-button-tertiary-surface-pressed: var(--paper-color-ink-2);
+    --paper-components-button-destructive-surface: var(--paper-color-ink-0);
+    --paper-components-button-destructive-text: var(--paper-color-ink-15);
+    --paper-components-button-destructive-border: var(--paper-color-ink-15);
+    --paper-components-button-disabled-surface: var(--paper-color-ink-1);
+    --paper-components-button-disabled-text: var(--paper-color-ink-6);
+    --paper-components-button-focus-ring: var(--paper-color-ink-15);
+    --paper-components-button-border-width: 2px;
+    --paper-components-input-surface: var(--paper-color-ink-0);
+    --paper-components-input-text: var(--paper-color-ink-15);
+    --paper-components-input-placeholder: var(--paper-color-ink-9);
+    --paper-components-input-border: var(--paper-color-ink-15);
+    --paper-components-input-border-focus: var(--paper-color-ink-15);
+    --paper-components-input-error: var(--paper-color-ink-15);
+    --paper-components-input-border-width: 2px;
+    --paper-components-input-border-width-focus: 3px;
+    --paper-components-switch-track-on: var(--paper-color-ink-15);
+    --paper-components-switch-track-off: var(--paper-color-ink-0);
+    --paper-components-switch-thumb-on: var(--paper-color-ink-0);
+    --paper-components-switch-thumb-off: var(--paper-color-ink-15);
+    --paper-components-switch-border: var(--paper-color-ink-15);
+    --paper-components-segmented-surface: var(--paper-color-ink-0);
+    --paper-components-segmented-text: var(--paper-color-ink-15);
+    --paper-components-segmented-selected-surface: var(--paper-color-ink-15);
+    --paper-components-segmented-selected-text: var(--paper-color-ink-0);
+    --paper-components-segmented-border: var(--paper-color-ink-15);
+    --paper-components-list-divider: var(--paper-color-ink-8);
+    --paper-components-list-row-pressed: var(--paper-color-ink-2);
+    --paper-components-badge-surface: var(--paper-color-ink-15);
+    --paper-components-badge-text: var(--paper-color-ink-0);
+    --paper-components-status-positive-surface: var(--paper-color-ink-0);
+    --paper-components-status-positive-text: var(--paper-color-ink-15);
+    --paper-components-status-warning-surface: var(--paper-color-ink-0);
+    --paper-components-status-warning-text: var(--paper-color-ink-15);
+    --paper-components-status-critical-surface: var(--paper-color-ink-0);
+    --paper-components-status-critical-text: var(--paper-color-ink-15);
+    --paper-components-status-info-surface: var(--paper-color-ink-0);
+    --paper-components-status-info-text: var(--paper-color-ink-15);
+    --paper-components-progress-track: var(--paper-color-ink-1);
+    --paper-components-progress-fill: var(--paper-color-ink-15);
+    --paper-components-dialog-surface: var(--paper-color-ink-0);
+    --paper-components-dialog-scrim: #00000000;
+    --paper-components-dialog-border: var(--paper-color-ink-15);
+    --paper-motion-duration-fast: 0ms;
+    --paper-motion-duration-base: 0ms;
+  }
+}
+
+/* Typefaces: text styles reference these roles. data-typeface swaps the whole set. */
+:root {
+  --paper-font-sans: "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --paper-font-serif: "New York", ui-serif, "Georgia", serif;
+  --paper-font-display: "Hacky", ui-serif, "Georgia", serif;
+  --paper-font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", "Menlo", monospace;
+}
+[data-typeface="device"] {
+  --paper-font-sans: "Inter", "Atkinson Hyperlegible Next", "Noto Sans", system-ui, sans-serif;
+  --paper-font-serif: "Literata", "Charis SIL", "Noto Serif", "Georgia", serif;
+  --paper-font-display: "Literata", "Charis SIL", "Noto Serif", "Georgia", serif;
+  --paper-font-mono: "IBM Plex Mono", "Noto Sans Mono", ui-monospace, monospace;
 }
 
 /* Effects & gradients */
@@ -227,103 +614,103 @@
 
 /* Typography */
 .paper-text-sans-serif-header-2 {
-  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: var(--paper-font-sans);
   font-size: 16px;
   font-weight: 590;
   line-height: normal;
 }
 .paper-text-sans-serif-body {
-  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: var(--paper-font-sans);
   font-size: 13px;
   font-weight: 400;
   line-height: normal;
 }
 .paper-text-serif-header {
-  font-family: "Hacky", ui-serif, Georgia, serif;
+  font-family: var(--paper-font-display);
   font-size: 32px;
   font-weight: 800;
   line-height: normal;
 }
 .paper-text-serif-description {
-  font-family: "New York Medium", ui-serif, Georgia, serif;
+  font-family: var(--paper-font-serif);
   font-size: 13px;
   font-weight: 400;
   line-height: normal;
 }
 .paper-text-serif-list-description {
-  font-family: "New York Medium", ui-serif, Georgia, serif;
+  font-family: var(--paper-font-serif);
   font-size: 13px;
   font-weight: 400;
   line-height: normal;
 }
 .paper-text-sans-serif-body-discovery {
-  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: var(--paper-font-sans);
   font-size: 16px;
   font-weight: 400;
   line-height: normal;
 }
 .paper-text-serif-header-discovery {
-  font-family: "New York Extra Large", ui-serif, Georgia, serif;
+  font-family: var(--paper-font-serif);
   font-size: 28px;
   font-weight: 400;
   line-height: normal;
 }
 .paper-text-serif-pdf-title {
-  font-family: "Hacky", ui-serif, Georgia, serif;
+  font-family: var(--paper-font-display);
   font-size: 60px;
   font-weight: 500;
   line-height: normal;
 }
 .paper-text-serif-discovery-buttons {
-  font-family: "New York Medium", ui-serif, Georgia, serif;
+  font-family: var(--paper-font-serif);
   font-size: 13px;
   font-weight: 600;
   line-height: normal;
 }
 .paper-text-sans-serif-body-small {
-  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: var(--paper-font-sans);
   font-size: 11px;
   font-weight: 400;
   line-height: normal;
 }
 .paper-text-serif-discovery-title {
-  font-family: "Hacky", ui-serif, Georgia, serif;
+  font-family: var(--paper-font-display);
   font-size: 32px;
   font-weight: 600;
   line-height: normal;
 }
 .paper-text-serif-header-cyr {
-  font-family: "New York", ui-serif, Georgia, serif;
+  font-family: var(--paper-font-serif);
   font-size: 28px;
   font-weight: 400;
   line-height: normal;
 }
 .paper-text-sans-serif-body-title {
-  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: var(--paper-font-sans);
   font-size: 13px;
   font-weight: 700;
   line-height: normal;
 }
 .paper-text-sans-serif-paywall-title {
-  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: var(--paper-font-sans);
   font-size: 32px;
   font-weight: 700;
   line-height: normal;
 }
 .paper-text-sans-serif-paywall-subtitle {
-  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: var(--paper-font-sans);
   font-size: 20px;
   font-weight: 590;
   line-height: normal;
 }
 .paper-text-serif-price-description {
-  font-family: "New York", ui-serif, Georgia, serif;
+  font-family: var(--paper-font-serif);
   font-size: 11px;
   font-weight: 400;
   line-height: normal;
 }
 .paper-text-sans-serif-code-mono {
-  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--paper-font-mono);
   font-size: 13px;
   font-weight: 500;
   line-height: normal;

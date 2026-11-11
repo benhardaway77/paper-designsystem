@@ -2,15 +2,35 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
-  cssName, resolveAll, buildCss, gradientCss, shadowCss, THEMES, PALETTES,
+  cssName, resolveAll, buildCss, buildJs, gradientCss, shadowCss, applyExtensions, THEMES, PALETTES,
 } from '../scripts/lib.mjs';
 
-const source = JSON.parse(readFileSync(new URL('../figma/variables.json', import.meta.url)));
+const read = path => JSON.parse(readFileSync(new URL(path, import.meta.url)));
+const figma = read('../figma/variables.json');
+const extensions = read('../tokens/extensions.json');
+const source = applyExtensions(figma, extensions);
 
-test('export contains all 144 Figma variables in 3 collections', () => {
-  assert.equal(source.collections.length, 3);
-  const total = source.collections.reduce((n, c) => n + c.variables.length, 0);
+test('Figma export contains all 144 variables in 3 collections', () => {
+  assert.equal(figma.collections.length, 3);
+  const total = figma.collections.reduce((n, c) => n + c.variables.length, 0);
   assert.equal(total, 144);
+});
+
+test('applyExtensions adds modes and variables without mutating the Figma export', () => {
+  const before = JSON.stringify(figma);
+  const tokens = source.collections.find(c => c.name === 'Tokens');
+  const colors = source.collections.find(c => c.name === 'Colors');
+  assert.deepEqual(tokens.modes, THEMES);
+  assert.deepEqual(colors.modes, PALETTES);
+  assert.equal(JSON.stringify(figma), before);
+  assert.ok(tokens.variables.some(v => v.n === 'components/button/primary-surface'));
+});
+
+test('applyExtensions rejects typos and incomplete variables', () => {
+  assert.throws(() => applyExtensions(figma, { modes: { Tokens: ['eink'] }, modeValues: { Tokens: { eink: { 'fonts/mian': '#000000' } } } }), /unknown variable "fonts\/mian"/);
+  assert.throws(() => applyExtensions(figma, { variables: { Tokens: [{ n: 'x', t: 'FLOAT', v: { light: 1 } }] } }), /no value for mode\(s\) dark/);
+  assert.throws(() => applyExtensions(figma, { modes: { Tokens: ['dark'] } }), /already exists/);
+  assert.throws(() => resolveAll(figma), /forget applyExtensions/);
 });
 
 test('cssName sanitises Figma names into valid, prefixed custom properties', () => {
@@ -26,7 +46,7 @@ test('css names are unique across every collection', () => {
   assert.equal(new Set(names).size, names.length);
 });
 
-test('every alias resolves to a concrete value in all 8 theme × palette combinations', () => {
+test('every alias resolves to a concrete value in every theme × palette combination', () => {
   const resolved = resolveAll(source);
   for (const theme of THEMES) {
     for (const palette of PALETTES) {
@@ -64,6 +84,69 @@ test('CSS keeps the alias chain so theme and palette switch independently', () =
   assert.match(css, /--paper-components-card-main-card-radius: 35px;/);
   // booleans have no CSS meaning and must not leak in
   assert.doesNotMatch(css, /light-theme/);
+});
+
+const isInkGray = hex => {
+  if (hex === '#00000000') return true; // explicit "none"
+  const m = /^#([0-9a-f]{2})\1\1$/.exec(hex);
+  return !!m && parseInt(m[1], 16) % 17 === 0;
+};
+
+test('eink theme uses only opaque grays on the 16-level e-paper grid, for every palette', () => {
+  const r = resolveAll(source);
+  const colourNames = source.collections.find(c => c.name === 'Tokens').variables.filter(v => v.t === 'COLOR').map(v => v.n);
+  for (const palette of PALETTES) {
+    for (const n of colourNames) {
+      const value = r.eink[palette][n];
+      assert.ok(isInkGray(value), `eink/${palette} ${n} = ${value} is not a 16-level gray`);
+      assert.equal(value, r.eink.peach[n], `eink ${n} must not depend on the palette`);
+    }
+  }
+  assert.equal(r.eink.peach['fonts/main'], '#000000');
+  assert.equal(r.eink.peach['borders/shadow-or-border/is-border'], true);
+  assert.equal(r.eink.peach['motion/duration-fast'], 0);
+});
+
+test('graphite palette is neutral gray in light and dark', () => {
+  const r = resolveAll(source);
+  assert.equal(r.light.graphite.primary, '#eeeeee');
+  assert.equal(r.dark.graphite['fonts/main'], '#cccccc');
+  const isGray = v => v.slice(1, 3) === v.slice(3, 5) && v.slice(3, 5) === v.slice(5, 7);
+  const paletteDriven = ['primary', 'accent', 'vibrant', 'translucent', 'surfaces/main/first-layer',
+    'surfaces/main/second-layer', 'surfaces/main/accent', 'borders/colors/active', 'components/button/primary-surface',
+    'components/button/secondary-surface', 'components/switch/track-on', 'components/progress/fill'];
+  for (const theme of ['light', 'dark']) {
+    for (const n of paletteDriven) assert.ok(isGray(r[theme].graphite[n]), `${theme}/graphite ${n} = ${r[theme].graphite[n]}`);
+  }
+});
+
+test('component tokens meet edge-device minimums', () => {
+  const r = resolveAll(source);
+  for (const theme of THEMES) {
+    const t = r[theme].peach;
+    assert.ok(t['components/button/height-md'] >= 48 && t['components/button/min-touch-target'] >= 48);
+    assert.ok(t['components/input/height'] >= 48);
+    assert.ok(t['components/button/focus-ring-width'] >= 2);
+  }
+});
+
+test('CSS emits eink theme, auto e-paper media query, font roles and ms units', () => {
+  const css = buildCss(source);
+  assert.match(css, /\[data-theme="eink"\][^{]*{[^}]*--paper-fonts-main: var\(--paper-color-ink-15\);/);
+  assert.match(css, /@media \(update: slow\), \(monochrome\) {\s*:root:not\(\[data-theme\]\)/);
+  assert.match(css, /\[data-palette="graphite"\]\s*{[^}]*--paper-primary: var\(--paper-color-graphite-200\);/);
+  assert.match(css, /--paper-motion-duration-fast: 120ms;/);
+  assert.match(css, /\.paper-text-sans-serif-body {\s*font-family: var\(--paper-font-sans\);/);
+  assert.match(css, /--paper-font-mono: "IBM Plex Mono"/);
+  assert.match(css, /\[data-typeface="device"\] {\s*--paper-font-sans: "Inter"/);
+});
+
+test('JS output includes every theme and palette', () => {
+  const data = JSON.parse(buildJs(source).json);
+  assert.deepEqual(Object.keys(data.tokens), THEMES);
+  assert.deepEqual(Object.keys(data.tokens.eink), PALETTES);
+  assert.equal(data.primitives['color/graphite/200'], '#eeeeee');
+  assert.equal(data.typography['Sans serif/Body'].fontRole, 'sans');
 });
 
 test('gradient and shadow styles convert to CSS', () => {
